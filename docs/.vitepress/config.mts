@@ -1,0 +1,28 @@
+import { defineConfig } from 'vitepress'
+
+// https://vitepress.dev/reference/site-config
+export default defineConfig({
+  title: "Electron Ai",
+  description: "AI聊天工具开发文档",
+  themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
+    nav: [
+      { text: 'Home', link: '/' },
+      { text: '开始', link: '/项目初始化' },
+      // { text: '使用示例', link: '/项目初始化' }
+    ],
+
+    sidebar: [
+      {
+        text: 'elctron-ai开发文档',
+        items: [
+          { text: '项目初始化', link: '/项目初始化' },
+        ]
+      }
+    ],
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+    ]
+  }
+})
