@@ -29,10 +29,9 @@
 		}
 	},
 	"include": [
-		"forge.env.d.ts",
-		"src/**/*.ts",
-		"src/**/*.tsx",
-		"src/**/*.vue",
-		"src/**/*.d.ts"
+		"renderer/**/*.vue",
+		"renderer/**/*.tsx",
+		"**/*.ts",
+		"**/*.d.ts"
 	]
 }
