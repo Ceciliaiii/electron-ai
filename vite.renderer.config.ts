@@ -6,15 +6,16 @@ import { resolve } from 'node:path';
 export default defineConfig(async () => {
   const vue = (await import('@vitejs/plugin-vue')).default;
   const tailwindcss = (await import('@tailwindcss/vite')).default;
+  const autoImport = (await import('unplugin-auto-import/vite')).default;
 
   return {
    plugins: [
       vue(),
       tailwindcss(),
-      // autoImport({
-      //   imports: ['vue', 'vue-router', 'pinia', 'vue-i18n', '@vueuse/core'],
-      //   dts: 'renderer/auto-imports.d.ts'
-      // })
+      autoImport({
+        imports: ['vue', 'vue-router', 'pinia', 'vue-i18n', '@vueuse/core'],
+        dts: 'renderer/auto-imports.d.ts'
+      })
     ],
     css: {
       transformer: 'lightningcss' as CSSOptions['transformer'],
