@@ -18,6 +18,7 @@ export default defineConfig({
         text: 'elctron-ai开发文档',
         items: [
           { text: '项目初始化', link: '/项目初始化' },
+          { text: '目录扁平化', link: '/目录扁平化' }
         ]
       }
     ],
