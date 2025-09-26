@@ -28,28 +28,25 @@ module.exports = {
     {
       name: '@electron-forge/plugin-vite',
       config: {
-        // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
-        // If you are familiar with Vite configuration, it will look really familiar.
         build: [
           {
-            // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
-            entry: 'src/main.ts',
+            entry: 'main/index.ts', // 主进程入口
             config: 'vite.main.config.ts',
             target: 'main',
           },
           {
-            entry: 'src/preload.ts',
+            entry: 'preload.ts',// 预加载脚本入口
             config: 'vite.preload.config.ts',
             target: 'preload',
           },
         ],
-        renderer: [
+        renderer: [ // 这里不用做修改
           {
-            name: 'main_window',
+            name:'main_window',
             config: 'vite.renderer.config.ts',
-          },
-        ],
-      },
+          }
+        ]
+      }
     },
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application
