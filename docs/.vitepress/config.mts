@@ -9,7 +9,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: '开始', link: '/项目初始化' },
+      { text: '开始', link: '/1-项目初始化' },
       // { text: '使用示例', link: '/项目初始化' }
     ],
 
