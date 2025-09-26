@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 开始
-      link: /项目初始化.md
+      link: /1-项目初始化.md
     # - theme: alt
     #   text: 使用示例
     #   link: /api-examples
