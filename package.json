@@ -1,6 +1,6 @@
 {
-  "name": "electron-demo",
-  "productName": "electron-demo",
+  "name": "cecilia",
+  "productName": "Cecilia",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".vite/build/index.js",
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^13.9.0",
+    "electron-log": "^5.4.3",
     "electron-squirrel-startup": "^1.0.1",
     "naive-ui": "^2.42.0",
     "pinia": "^3.0.3",
