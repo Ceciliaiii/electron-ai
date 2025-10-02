@@ -21,6 +21,7 @@ export default defineConfig({
           { text: '2. 目录扁平化', link: '/2-目录扁平化' },
           { text: '3. 国际化', link: '/3-国际化' },
           { text: '4. 自定义标题栏', link: '/4-自定义标题栏' },
+          { text: '5. 日志管理', link: '/5-日志管理' },
         ]
       }
     ],
