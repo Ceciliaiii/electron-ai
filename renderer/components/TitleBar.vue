@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Icon as Iconify../hooks/useWinManagervue';
-import { useWinManager } from '../hooks/useWInManager';
+import { Icon as IconifyIcon } from '@iconify/vue';
+import { useWinManager } from '../hooks/useWinManager';
 
 interface TitleBarProps {
   title?: string;
