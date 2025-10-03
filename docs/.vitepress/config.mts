@@ -22,6 +22,7 @@ export default defineConfig({
           { text: '3. 国际化', link: '/3-国际化' },
           { text: '4. 自定义标题栏', link: '/4-自定义标题栏' },
           { text: '5. 日志管理', link: '/5-日志管理' },
+          { text: '6. css主题 & 首页布局', link: '/6-css主题&首页布局' },
         ]
       }
     ],
