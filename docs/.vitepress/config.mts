@@ -23,6 +23,7 @@ export default defineConfig({
           { text: '4. 自定义标题栏', link: '/4-自定义标题栏' },
           { text: '5. 日志管理', link: '/5-日志管理' },
           { text: '6. css主题 & 首页布局', link: '/6-css主题&首页布局' },
+          { text: '7. 主题切换', link: '/7-主题切换' },
         ]
       }
     ],
