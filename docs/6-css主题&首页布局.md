@@ -4,7 +4,7 @@
 
 ```css
 /* renderer/styles/theme/dark.css */
-/* 跟随系统 */
+/* 跟随系统, 媒体查询 */
 @media (prefers-color-scheme: dark) {
   :root {
     --primary-color: #07C160;
