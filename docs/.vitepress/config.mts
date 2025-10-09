@@ -24,6 +24,7 @@ export default defineConfig({
           { text: '5. 日志管理', link: '/5-日志管理' },
           { text: '6. css主题 & 首页布局', link: '/6-css主题&首页布局' },
           { text: '7. 主题切换', link: '/7-主题切换' },
+          { text: '8. 优化与提示框', link: '/8-优化与提示框' },
         ]
       }
     ],

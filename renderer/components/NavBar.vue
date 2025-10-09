@@ -30,7 +30,6 @@ const { t } = useI18n();
           </native-tooltip>
         </li>
       </ul>
-
     </nav>
   </drag-region>
 </template>
