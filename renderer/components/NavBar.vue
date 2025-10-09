@@ -2,8 +2,11 @@
 import { Icon as IconifyIcon } from '@iconify/vue';
 import DragRegion from './DragRegion.vue';
 import ThemeSwitcher from './ThemeSwitcher.vue';
+import NativeTooltip from './NativeTooltip.vue';
 
 defineOptions({ name: 'NavBar' });
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -12,16 +15,19 @@ defineOptions({ name: 'NavBar' });
       class="h-[calc(100%-1.4rem)] flex flex-col px-4 py-2 mt-[.7rem] mb-[.7rem] border-r border-r-input text-tx-secondary">
       <ul class="flex-auto">
         <li class="sidebar-item no-drag cursor-pointer hover:text-primary-hover text-tx-primary">
-          <iconify-icon icon="material-symbols:chat-outline" width="24" height="24" />
+          <native-tooltip :content="t('main.sidebar.conversations')">
+            <iconify-icon icon="material-symbols:chat-outline" width="24" height="24" />
+          </native-tooltip>
         </li>
       </ul>
       <ul>
         <li class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle">
           <theme-switcher />
-          <!-- <iconify-icon icon="material-symbols:dark-mode-outline" width="24" height="24" /> -->
         </li>
         <li class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle">
-          <iconify-icon icon="material-symbols:settings-outline" width="24" height="24" />
+          <native-tooltip :content="t('main.sidebar.settings')">
+            <iconify-icon icon="material-symbols:settings-outline" width="24" height="24" />
+          </native-tooltip>
         </li>
       </ul>
 
