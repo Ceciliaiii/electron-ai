@@ -25,6 +25,7 @@ export default defineConfig({
           { text: '6. css主题 & 首页布局', link: '/6-css主题&首页布局' },
           { text: '7. 主题切换', link: '/7-主题切换' },
           { text: '8. 优化与提示框', link: '/8-优化与提示框' },
+          { text: '9. 对话列表', link: '/9-对话列表' },
         ]
       }
     ],
