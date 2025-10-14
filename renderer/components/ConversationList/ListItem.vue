@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Conversation } from '../../../common/types'
 import { Icon as IconifyIcon } from '@iconify/vue'
+import ItemTitle from './ItemTitle.vue';
 
 const _PIN_ICON_SIZE = 16 as const
 
@@ -22,10 +23,8 @@ const emit = defineEmits(['updateTitle']);
   </div>
   <div class="w-full flex items-center">
     <!-- 复选框 预留 -->
-    <div class="flex-auto">
-      <h2 class="conversation-title w-full text-tx-secondary font-semibold loading-5 truncate">
-        {{ title }}
-      </h2>
-    </div>
+    <!-- <div class="flex-auto"> -->
+      <item-title :title="title" />
+    <!-- </div> -->
   </div>
 </template>
