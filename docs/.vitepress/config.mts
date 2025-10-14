@@ -26,6 +26,7 @@ export default defineConfig({
           { text: '7. 主题切换', link: '/7-主题切换' },
           { text: '8. 优化与提示框', link: '/8-优化与提示框' },
           { text: '9. 对话列表', link: '/9-对话列表' },
+          { text: '10. 对话标题溢出', link: '/10-对话标题溢出' },
         ]
       }
     ],

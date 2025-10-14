@@ -22,7 +22,7 @@ const emit = defineEmits(['updateTitle']);
     </span>
   </div>
   <div class="w-full flex items-center">
-    <!-- 复选框 预留 -->
+    <!-- 复选框 预留位置 -->
     <!-- <div class="flex-auto"> -->
       <item-title :title="title" />
     <!-- </div> -->
