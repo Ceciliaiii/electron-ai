@@ -27,6 +27,7 @@ export default defineConfig({
           { text: '8. 优化与提示框', link: '/8-优化与提示框' },
           { text: '9. 对话列表', link: '/9-对话列表' },
           { text: '10. 对话标题溢出', link: '/10-对话标题溢出' },
+          { text: '11. 菜单服务', link: '/11-菜单服务' },
         ]
       }
     ],
