@@ -2,14 +2,15 @@ import { ipcMain, Menu, type MenuItemConstructorOptions } from 'electron';
 import { IPC_EVENTS } from '../../common/constants';
 import { cloneDeep } from '../../common/utils';
 import logManager from './LogService';
+import { createTranslator } from '../utils';
 
 // Menu.buildFromTemplate()
-
-let t = (val: string | undefined) => val
+// 使用翻译器
+let t: ReturnType<typeof createTranslator> = createTranslator();
 
 class MenuService {
   private static _instance: MenuService;
-  private _menuTemplate: Map<string, MenuItemConstructorOptions[]> = new Map();
+  private _menuTemplates: Map<string, MenuItemConstructorOptions[]> = new Map();
   private _currentMenu?: Menu = void 0;
 
   private constructor() {
@@ -40,7 +41,7 @@ class MenuService {
 
 //   注册对应对话菜单
   public register(menuId: string, template: MenuItemConstructorOptions[]) {
-    this._menuTemplate.set(menuId, template);
+    this._menuTemplates.set(menuId, template);
     return menuId;
   }
 
@@ -48,7 +49,7 @@ class MenuService {
   public showMenu(menuId: string, onClose?: () => void, dynamicOptions?: string) {
     if (this._currentMenu) return;
 
-    const template = cloneDeep(this._menuTemplate.get(menuId));
+    const template = cloneDeep(this._menuTemplates.get(menuId));
 
     if (!template) {
       logManager.warn(`Menu ${menuId} not found.`);
@@ -124,12 +125,12 @@ class MenuService {
 
 //   删除特定菜单
   public destroyMenu(menuId: string) {
-    this._menuTemplate.delete(menuId);
+    this._menuTemplates.delete(menuId);
   }
 
 //   清空所有菜单
   public destroyed() {
-    this._menuTemplate.clear();
+    this._menuTemplates.clear();
     this._currentMenu = void 0;
   }
 }

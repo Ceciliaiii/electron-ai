@@ -35,3 +35,27 @@ export const MAIN_WIN_SIZE = {
   minWidth: 1024,
   minHeight: 800,
 } as const
+
+export enum MENU_IDS {
+  CONVERSATION_ITEM = 'conversation-item',    // 聊天项
+  CONVERSATION_LIST = 'conversation-list',    // 聊天列表
+  MESSAGE_ITEM = 'message-item',            // 消息项
+}
+
+export enum CONVERSATION_ITEM_MENU_IDS {
+  PIN = 'pin',
+  RENAME = 'rename',
+  DEL = 'del',
+}
+
+export enum CONVERSATION_LIST_MENU_IDS {
+  NEW_CONVERSATION = 'newConversation',
+  SORT_BY = 'sortBy',
+  SORT_BY_CREATE_TIME = 'sortByCreateTime',
+  SORT_BY_UPDATE_TIME = 'sortByUpdateTime',
+  SORT_BY_NAME = 'sortByName',
+  SORT_BY_MODEL = 'sortByModel',
+  SORT_ASCENDING = 'sortAscending',
+  SORT_DESCENDING = 'sortDescending',
+  BATCH_OPERATIONS = 'batchOperations',
+}
