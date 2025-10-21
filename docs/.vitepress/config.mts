@@ -29,6 +29,7 @@ export default defineConfig({
           { text: '10. 对话标题溢出', link: '/10-对话标题溢出' },
           { text: '11. 菜单服务', link: '/11-菜单服务' },
           { text: '12. 菜单功能', link: '/12-菜单功能' },
+          { text: '13. 对话列表操作', link: '/13-对话list操作' },
         ]
       }
     ],
