@@ -33,6 +33,7 @@ export default defineConfig({
           { text: '14. Message初始化', link: '/14-message初始化' },
           { text: '15. sort & search', link: '/15-实现排序与搜索' },
           { text: '16. title重命名 & list批量操作', link: '/16-reTitle&listOperation' },
+          { text: '17. 多窗口', link: '/17-多窗口逻辑' },
         ]
       }
     ],

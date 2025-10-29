@@ -124,6 +124,8 @@ class WindowService {
 
     return window;
   }
+
+  
   private _setupWinLifecycle(window: BrowserWindow, name: WindowNames) {
     const updateWinStatus = debounce(() => !window?.isDestroyed()
       && window?.webContents?.send(IPC_EVENTS.MAXIMIZE_WINDOW + 'back', window?.isMaximized()), 80);
@@ -154,7 +156,7 @@ class WindowService {
       pararms.win?.show();
     }
 
-    // 若不是隐藏窗口，create时有loading；否则直接显示窗口
+    // 若不是隐藏窗口（第一次打开），create时有loading；否则直接显示窗口
     if (!pararms.isHiddenWin) {
       const loadingHandler = this._addLoadingView(pararms.win, pararms.size);
       loadingHandler?.(onReady)
