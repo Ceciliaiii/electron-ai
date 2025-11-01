@@ -26,7 +26,6 @@ interface SizeOptions {
 
 const SHARED_WINDOW_OPTIONS = {
   titleBarStyle: 'hidden',
-  opacity: 0,
   show: false,        // 隐藏窗口，loading结束再展示
   title: 'Diona',
   darkTheme: themeManager.isDark,
@@ -96,7 +95,7 @@ class WindowService {
   public create(name: WindowNames, size: SizeOptions, moreOpts?: BrowserWindowConstructorOptions) {
     if (this.get(name)) return;    // 若已经有窗口实例，则不再创建
     const isHiddenWin = this._isHiddenWin(name);    // 获取隐藏窗口
-    let window = this._createWinInstance(name, moreOpts);
+    let window = this._createWinInstance(name, { ...size, ...moreOpts });
 
     // 不是隐藏窗口时，加载生命周期和模板
     !isHiddenWin && this

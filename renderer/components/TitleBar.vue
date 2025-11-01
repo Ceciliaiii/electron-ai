@@ -53,7 +53,7 @@ function handleClose() {
         </button>
       </native-tooltip>
       <native-tooltip :content="t('window.close')">
-        <button v-show="isClosable" class="close-button title-bar-button cursor-pointer hover:bg-red-300 "
+        <button v-show="isClosable" class="close-button title-bar-button cursor-pointer hover:bg-red-400 "
           @click="handleClose">
           <iconify-icon icon="material-symbols:close" :width="btnSize" :height="btnSize"></iconify-icon>
         </button>

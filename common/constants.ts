@@ -1,5 +1,8 @@
+// 常量字典
+
 export enum IPC_EVENTS {
   // renderer to main
+  OPEN_WINDOW = 'open-window',
   CLOSE_WINDOW = 'close-window',
   MINIMIZE_WINDOW = 'minimize-window',
   MAXIMIZE_WINDOW = 'maximize-window',
@@ -38,9 +41,9 @@ export const MAIN_WIN_SIZE = {
 } as const
 
 export enum MENU_IDS {
-  CONVERSATION_ITEM = 'conversation-item',    // 聊天项
-  CONVERSATION_LIST = 'conversation-list',    // 聊天列表
-  MESSAGE_ITEM = 'message-item',            // 消息项
+  CONVERSATION_ITEM = 'conversation-item',
+  CONVERSATION_LIST = 'conversation-list',
+  MESSAGE_ITEM = 'message-item',
 }
 
 export enum CONVERSATION_ITEM_MENU_IDS {
