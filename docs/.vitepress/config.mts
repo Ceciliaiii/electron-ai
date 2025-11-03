@@ -35,6 +35,7 @@ export default defineConfig({
           { text: '16. title重命名 & list批量操作', link: '/16-reTitle&listOperation' },
           { text: '17. 多窗口 Service', link: '/17-多窗口逻辑' },
           { text: '18. Dialog 窗口', link: '/18-dialog窗口' },
+          { text: '18. 遮罩层 & 动态置顶', link: '/19-遮罩层&动态置顶' },
         ]
       }
     ],
