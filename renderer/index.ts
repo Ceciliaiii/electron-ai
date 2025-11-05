@@ -1,40 +1,12 @@
-/**
- * This file will automatically be loaded by vite and run in the "renderer" context.
- * To learn more about the differences between the "main" and the "renderer" context in
- * Electron, visit:
- *
- * https://electronjs.org/docs/tutorial/process-model
- *
- * By default, Node.js integration in this file is disabled. When enabling Node.js integration
- * in a renderer process, please be aware of potential security implications. You can read
- * more about security risks here:
- *
- * https://electronjs.org/docs/tutorial/security
- *
- * To enable Node.js integration in this file, open up `main.js` and enable the `nodeIntegration`
- * flag:
- *
- * ```
- *  // Create the browser window.
- *  mainWindow = new BrowserWindow({
- *    width: 800,
- *    height: 600,
- *    webPreferences: {
- *      nodeIntegration: true
- *    }
- *  });
- * ```
- */
-
 import './styles/index.css';
-import 'vfonts/Lato.css'
+import 'vfonts/Lato.css';
 
 import { createApp, type Plugin } from 'vue';
-import i18n from './i18n';
-import App from './App.vue';
-import errorHandler from './utils/errorHandler';
-import { createMemoryHistory, createRouter } from 'vue-router';
+import { createRouter, createMemoryHistory } from 'vue-router';
 import { createPinia } from 'pinia';
+import i18n from './i18n';
+import errorHandler from './utils/errorHandler';
+import App from '../renderer/App.vue';
 
 import TitleBar from './components/TitleBar.vue';
 import DragRegion from './components/DragRegion.vue';
@@ -48,13 +20,24 @@ const components: Plugin = function (app: any) {
 
 // 注册vue-router
 const router = createRouter({
-    history: createMemoryHistory(),
-    routes: [
+  history: createMemoryHistory(),
+  routes: [
+    {
+      path: '/',
+      component: () => import('./views/Index.vue'),
+      children: [
         {
-            path: '/',
-            component: () => import ('./views/Index.vue')
+          path: '/',
+          redirect: 'conversation'
+        },
+        {
+          name: 'conversation',
+          path: 'conversation/:id?',   // url传对话项id
+          component: () => import('./views/conversation.vue')
         }
-    ]
+      ]
+    },
+  ],
 })
 
 // 注册pinia
