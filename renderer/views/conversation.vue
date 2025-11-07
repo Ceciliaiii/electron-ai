@@ -2,10 +2,12 @@
 import type { SelectValue } from '../types';
 import { MAIN_WIN_SIZE } from '../../common/constants';
 import { throttle } from '../../common/utils';
+import { messages } from '../testData';
 
 import ResizeDivider from '../components/ResizeDivider.vue';
 import MessageInput from '../components/MessageInput.vue';
 import CreateConversation from '../components/CreateConversation.vue';
+import MessageList from '../components/MessageList.vue';
 
 const listHeight = ref(0);
 const listScale = ref(0.7);
@@ -77,9 +79,9 @@ watch(() => listHeight.value, () => listScale.value = listHeight.value / window.
   </div>
   <div class="h-full flex flex-col" v-else>
     <div class="w-full min-h-0" :style="{ height: `${listHeight}px` }">
-      message-list
+      <message-list :messages="messages" />
     </div>
-    <div class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-5px] ">
+    <div class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-3px] ">
       <resize-divider direction="horizontal" v-model:size="listHeight" :max-size="maxListHeight" :min-size="100" />
       <message-input v-model:provider="provider" :placeholder="$t('main.conversation.placeholder')" />
     </div>
