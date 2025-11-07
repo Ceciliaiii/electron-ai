@@ -37,6 +37,7 @@ export default defineConfig({
           { text: '18. Dialog 窗口', link: '/18-dialog窗口' },
           { text: '19. 遮罩层 & 动态置顶', link: '/19-遮罩层&动态置顶' },
           { text: '20. 对话详情布局', link: '/20-main-layout' },
+          { text: '21. message列表', link: '/21-messageList' },
         ]
       }
     ],
