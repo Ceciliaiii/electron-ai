@@ -8,6 +8,7 @@ import ResizeDivider from '../components/ResizeDivider.vue';
 import MessageInput from '../components/MessageInput.vue';
 import CreateConversation from '../components/CreateConversation.vue';
 import MessageList from '../components/MessageList.vue';
+import { useMessagesStore } from '../stores/messages';
 
 const listHeight = ref(0);
 const listScale = ref(0.7);
@@ -19,6 +20,8 @@ const provider = ref<SelectValue>();
 
 const route = useRoute();
 const router = useRouter();
+
+const messagesStore = useMessagesStore();
 
 
 const providerId = computed(() => ((provider.value as string)?.split(':')[0] ?? ''));
@@ -56,6 +59,12 @@ onMounted(async () => {
   await nextTick();
   listHeight.value = window.innerHeight * listScale.value;
 });
+
+onBeforeRouteUpdate(async (to, from, next) => {
+  if (to.params.id === from.params.id) return next();
+  await messagesStore.initialize(Number(to.params.id));
+  next();
+})
 
 // 实时监测message列表高度 => 动态变化List比例大小
 watch(() => listHeight.value, () => listScale.value = listHeight.value / window.innerHeight);

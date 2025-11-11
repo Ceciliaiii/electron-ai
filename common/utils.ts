@@ -79,3 +79,19 @@ export function parseOpenAISetting(setting: string): OpenAISetting {
     return {} as OpenAISetting;
   }
 }
+
+
+// 根据不同message的唯一key 去重
+// 每次查询dataBase的message时，如果store中早已存在则只返回store中的数据
+// 否则从dataBase中查询并存入store中
+export function uniqueByKey<T extends Record<string, any>>(arr: T[], key: keyof T): T[] {
+  const seen = new Map<any, boolean>();
+  return arr.filter(item => {
+    const keyValue = item[key];
+    if (seen.has(keyValue)) {
+      return false;
+    }
+    seen.set(keyValue, true);
+    return true;
+  });
+}
