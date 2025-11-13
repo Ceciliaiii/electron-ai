@@ -39,6 +39,7 @@ export default defineConfig({
           { text: '20. 对话详情布局', link: '/20-main-layout' },
           { text: '21. message列表搭建', link: '/21-messageList' },
           { text: '22. message存储与更新', link: '/22-messageStore' },
+          { text: '23. 主进程接入大模型', link: '/23-接入大模型' },
         ]
       }
     ],

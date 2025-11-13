@@ -74,7 +74,7 @@ export function setupMainWindow() {
 
   windowManager.create(WINDOW_NAMES.MAIN, MAIN_WIN_SIZE);
 
-  // 监听start-a-dialogue事件，接收render进程发起的ai对话请求，获取请求参数
+  // 监听start-a-dialogue事件，接收render进程发起的ai对话请求
   ipcMain.on(IPC_EVENTS.START_A_DIALOGUE, async (_event, props: CreateDialogueProps) => {
     const { providerName, messages, messageId, selectedModel } = props;
     const mainWindow = windowManager.get(WINDOW_NAMES.MAIN);
@@ -83,10 +83,9 @@ export function setupMainWindow() {
       throw new Error('mainWindow not found');
     }
 
-
-    // 接收render进程发起的ai对话请求，获取请求参数
     try {
 
+      // 调用 chat，返回一个可迭代对象 chunks，用于分块返回结果
       const provider = createProvider(providerName);
       const chunks = await provider?.chat(messages, selectedModel);
 
@@ -95,12 +94,13 @@ export function setupMainWindow() {
       }
 
       for await (const chunk of chunks) {
+        // 分块
         const chunkContent = {
           messageId,
           data: chunk
         }
 
-        // 向main窗口render进程返回结果
+        // 向main窗口render进程返回分块结果
         mainWindow.webContents.send(IPC_EVENTS.START_A_DIALOGUE + 'back' + messageId, chunkContent);
       }
 
