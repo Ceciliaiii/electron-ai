@@ -14,6 +14,9 @@ export enum IPC_EVENTS {
   SHOW_CONTEXT_MENU = 'show-context-menu',
 
 
+  START_A_DIALOGUE = 'start-a-dialogue',
+
+
   LOG_DEBUG = 'log-debug',
   LOG_INFO = 'log-info',
   LOG_WARN = 'log-warn',

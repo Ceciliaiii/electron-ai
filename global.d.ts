@@ -12,6 +12,33 @@ interface CreateDialogProps {
   onCancel?: () => void;
 }
 
+// ai对话相关
+type DialogueMessageRole = 'user' | 'assistant'
+interface DialogueMessageProps {
+  role: DialogueMessageRole;
+  content: string;
+}
+
+interface CreateDialogueProps {
+  messages: DialogueMessageProps[];
+  providerName: string;
+  selectedModel: string;
+  messageId: number;
+  conversationId: number;
+}
+
+// ai对话返回数据块
+interface UniversalChunk {
+  isEnd: boolean;
+  result: string;
+}
+
+interface DialogueBackStream {
+  messageId: number;
+  data: UniversalChunk & { isError?: boolean };
+}
+
+
 interface WindowApi {
   closeWindow: () => void;
   minimizeWindow: () => void;

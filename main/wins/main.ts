@@ -1,8 +1,9 @@
-import type { BrowserWindow } from 'electron';
+import { ipcMain, type BrowserWindow } from 'electron';
 import { WINDOW_NAMES, MAIN_WIN_SIZE, IPC_EVENTS, MENU_IDS, CONVERSATION_ITEM_MENU_IDS, CONVERSATION_LIST_MENU_IDS } from '../../common/constants';
 import { windowManager } from '../service/WindowService';
 import { menuManager } from '../service/MenuService';
 import { logManager } from '../service/LogService';
+import { createProvider } from '../providers';
 
 
 // 注册菜单
@@ -70,5 +71,51 @@ export function setupMainWindow() {
   windowManager.onWindowCreate(WINDOW_NAMES.MAIN, (mainWindow: any) => {
     registerMenus(mainWindow);
   });
+
   windowManager.create(WINDOW_NAMES.MAIN, MAIN_WIN_SIZE);
+
+  // 监听start-a-dialogue事件，接收render进程发起的ai对话请求，获取请求参数
+  ipcMain.on(IPC_EVENTS.START_A_DIALOGUE, async (_event, props: CreateDialogueProps) => {
+    const { providerName, messages, messageId, selectedModel } = props;
+    const mainWindow = windowManager.get(WINDOW_NAMES.MAIN);
+
+    if (!mainWindow) {
+      throw new Error('mainWindow not found');
+    }
+
+
+    // 接收render进程发起的ai对话请求，获取请求参数
+    try {
+
+      const provider = createProvider(providerName);
+      const chunks = await provider?.chat(messages, selectedModel);
+
+      if(!chunks){
+        throw new Error('chunks or stream not found');
+      }
+
+      for await (const chunk of chunks) {
+        const chunkContent = {
+          messageId,
+          data: chunk
+        }
+
+        // 向main窗口render进程返回结果
+        mainWindow.webContents.send(IPC_EVENTS.START_A_DIALOGUE + 'back' + messageId, chunkContent);
+      }
+
+    } catch (error) {
+      const errorContent = {
+        messageId,
+        data: {
+          isEnd: true,
+          isError: true,
+          result: error instanceof Error ? error.message : String(error),
+        }
+      }
+
+      // 同理，返回errorContent
+      mainWindow.webContents.send(IPC_EVENTS.START_A_DIALOGUE + 'back' + messageId, errorContent);
+    }
+  })
 }
