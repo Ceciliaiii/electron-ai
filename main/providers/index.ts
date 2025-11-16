@@ -10,7 +10,7 @@ const providers = [
     models: ['glm-4.5-flash'],
     openAISetting: {
       baseURL: 'https://open.bigmodel.cn/api/paas/v4',
-      apiKey: '6608b9c18f2d4de9a15948021a3281f5.Sjl0ulDPbW7ywzEc',
+      apiKey: process.env.BIGMODEL_API_KEY || '',
     },
     createdAt: new Date().getTime(),
     updatedAt: new Date().getTime()
@@ -22,7 +22,7 @@ const providers = [
     models: ['deepseek-chat'],
     openAISetting: {
       baseURL: 'https://api.deepseek.com/v1',
-      apiKey: 'sk-91f83453547040439222c248ef28e324',
+      apiKey: process.env.DEEPSEEK_API_KEY || '',
     },
     createdAt: new Date().getTime(),
     updatedAt: new Date().getTime()
@@ -34,7 +34,7 @@ const providers = [
     models: ['Qwen/Qwen3-8B', 'deepseek-ai/DeepSeek-R1-0528-Qwen3-8B'],
     openAISetting: {
       baseURL: 'https://api.siliconflow.cn/v1',
-      apiKey: 'sk-hlkdyqzuhqljshjyqlxdngcxcbfofpeejiyjsjytaixfqtjj',
+      apiKey: process.env.SILICONFLOW_API_KEY || '',
     },
     createdAt: new Date().getTime(),
     updatedAt: new Date().getTime()
@@ -46,7 +46,7 @@ const providers = [
     models: ['ernie-speed-128k', 'ernie-4.0-8k', 'ernie-3.5-8k'],
     openAISetting: {
       baseURL: 'https://qianfan.baidubce.com/v2',
-      apiKey: 'sk-igenlbjuivlwbwuntfhigvianptdfzxkuyjuifvpmphcaivg',
+      apiKey: process.env.QIANFAN_API_KEY || '',
     },
     createdAt: new Date().getTime(),
     updatedAt: new Date().getTime()

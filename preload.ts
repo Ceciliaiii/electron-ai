@@ -45,6 +45,22 @@ const api: WindowApi = {
   // 向主进程请求params
   _dialogGetParams: () => ipcRenderer.invoke(WINDOW_NAMES.DIALOG + 'get-params') as Promise<CreateDialogProps>,
 
+  // render进程发送一个消息：创建一个对话
+  // 触发main进程 main/wins/main窗口 的ipcMain.on
+  startADialogue: (params: CreateDialogueProps) => ipcRenderer.send(IPC_EVENTS.START_A_DIALOGUE, params),
+
+  // render监听main的ai流式响应，cb处理main进程的流式数据，messageId匹配响应的对话
+  onDialogueBack: (cb: (data: DialogueBackStream) => void, messageId: number) => {
+    // 接受main进程推送的data流式数据，并转发给render进程的cb回调，前端能实时处理数据
+    const callback = (_event: Electron.IpcRendererEvent, data: DialogueBackStream) => cb(data);
+    // 监听main进程推送的事件（start-a-dialogue + back + messageId），只接受当前messageId的流式数据
+    ipcRenderer.on(IPC_EVENTS.START_A_DIALOGUE + 'back' + messageId, callback);
+
+    // 返回一个停止监听，调用时防止内存泄漏
+    return () => ipcRenderer.removeListener(IPC_EVENTS.START_A_DIALOGUE + 'back' + messageId, callback)
+  },
+
+
   logger: {
     debug: (message: string, ...meta: any[]) => ipcRenderer.send(IPC_EVENTS.LOG_DEBUG, message, ...meta),
     info: (message: string, ...meta: any[]) => ipcRenderer.send(IPC_EVENTS.LOG_INFO, message, ...meta),

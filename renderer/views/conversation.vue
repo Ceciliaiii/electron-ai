@@ -2,13 +2,14 @@
 import type { SelectValue } from '../types';
 import { MAIN_WIN_SIZE } from '../../common/constants';
 import { throttle } from '../../common/utils';
-import { messages } from '../testData';
+// import { messages } from '../testData';
 
 import ResizeDivider from '../components/ResizeDivider.vue';
 import MessageInput from '../components/MessageInput.vue';
 import CreateConversation from '../components/CreateConversation.vue';
 import MessageList from '../components/MessageList.vue';
 import { useMessagesStore } from '../stores/messages';
+import { useConversationsStore } from '../stores/conversations';
 
 const listHeight = ref(0);
 const listScale = ref(0.7);
@@ -22,6 +23,7 @@ const route = useRoute();
 const router = useRouter();
 
 const messagesStore = useMessagesStore();
+const conversationsStore = useConversationsStore();
 
 
 const providerId = computed(() => ((provider.value as string)?.split(':')[0] ?? ''));
@@ -36,10 +38,14 @@ async function handleCreateConversation(create: (title: string) => Promise<numbe
 }
 
 // 创建对话后，直接跳转
-function afterCreateConversation(id: number, _firstMsg: string) {
+function afterCreateConversation(id: number, firstMsg: string) {
   if (!id) return;
   router.push(`/conversation/${id}`);
-  // TODO: 第一条消息 涉及store
+  messagesStore.sendMessage({
+    type: 'question',
+    content: firstMsg,
+    conversationId: id 
+  })
   message.value = '';  // 清空输入框内容
 }
 
@@ -88,7 +94,7 @@ watch(() => listHeight.value, () => listScale.value = listHeight.value / window.
   </div>
   <div class="h-full flex flex-col" v-else>
     <div class="w-full min-h-0" :style="{ height: `${listHeight}px` }">
-      <message-list :messages="messages" />
+      <message-list :messages="messagesStore.messagesByConversationId(conversationId)" />
     </div>
     <div class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-3px] ">
       <resize-divider direction="horizontal" v-model:size="listHeight" :max-size="maxListHeight" :min-size="100" />
