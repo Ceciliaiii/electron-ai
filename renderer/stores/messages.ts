@@ -73,7 +73,7 @@ export const useMessagesStore = defineStore('messages', () => {
     const loadingMsgId = await addMessage({
       conversationId: message.conversationId,
       type: 'answer',
-      content: '',
+      content: '...',
       status: 'loading',
     });
     
