@@ -17,7 +17,7 @@ const maxListHeight = ref(window.innerHeight * 0.7);
 // const isStoping = ref(false);
 const message = ref('');
 const provider = ref<SelectValue>();
-// const msgInputRef = useTemplateRef<{ selectedProvider: SelectValue }>('msgInputRef');
+const msgInputRef = useTemplateRef<{ selectedProvider: SelectValue }>('msgInputRef');
 
 const route = useRoute();
 const router = useRouter();
@@ -30,6 +30,18 @@ const providerId = computed(() => ((provider.value as string)?.split(':')[0] ?? 
 const selectedModel = computed(() => ((provider.value as string)?.split(':')[1] ?? ''));
 // 对话项id
 const conversationId = computed(() => Number(route.params.id) as number | undefined);
+
+const isStoping = ref(false);
+const messageInputStatus = computed(() => {
+  if (isStoping.value) return 'loading';
+  const messages = messagesStore.messagesByConversationId(conversationId.value as number);
+  const last = messages[messages.length - 1];
+  // 正在生成消息时或生成前，loading状态
+  if (last?.status === 'streaming' && last?.content?.length === 0) return 'loading';
+  if (last?.status === 'loading' || last?.status === 'streaming') return last?.status;
+  return 'normal';
+})
+
 
 async function handleCreateConversation(create: (title: string) => Promise<number | void>, _message: string) {
   const id = await create(_message);
@@ -47,7 +59,49 @@ function afterCreateConversation(id: number, firstMsg: string) {
     conversationId: id 
   })
   message.value = '';  // 清空输入框内容
+  // 初始化 新对话的input草稿箱
+  messagesStore.setMessageInputValue(id, '')
 }
+
+
+async function handleSendMessage() {
+  if(!conversationId.value) return;
+
+  const _conversationId = conversationId.value;
+  // 获取当前对话的input内容
+  const content = messagesStore.messageInputValueById(_conversationId);
+  if (!content?.trim()?.length) return;
+  messagesStore.sendMessage({
+    type: 'question',
+    content,
+    conversationId: _conversationId,
+  })
+  messagesStore.setMessageInputValue(_conversationId, '');
+}
+
+
+// 对话切换模型，左侧自动更新
+const canUpdateConversationTime = ref(true);
+function handleProviderSelect() {
+  const current = conversationsStore.getConversationById(conversationId.value as number);
+  if (!conversationId.value || !current) return;
+  conversationsStore.updateConversation({
+    ...current,
+    providerId: Number(providerId.value),
+    selectedModel: selectedModel.value,
+  }, canUpdateConversationTime.value)
+}
+
+
+async function handleStopMessage() {
+  isStoping.value = true;
+  const msgIds = messagesStore.loadingMsgIdsByConversationId(conversationId.value as number ?? -1);
+  for (const id of msgIds) {
+    messagesStore.stopMessage(id);
+  }
+  isStoping.value = false;
+}
+
 
 // 随着窗口变化而调整对话框大小（节流）
 window.onresize = throttle(async () => {
@@ -75,6 +129,25 @@ onBeforeRouteUpdate(async (to, from, next) => {
 // 实时监测message列表高度 => 动态变化List比例大小
 watch(() => listHeight.value, () => listScale.value = listHeight.value / window.innerHeight);
 
+
+watch([() => conversationId.value, () => msgInputRef.value], async ([id, msgInput]) => {
+  if (!msgInput || !id) {
+    // TODO: 默认模型
+    return;
+  }
+
+  const current = conversationsStore.getConversationById(id);
+  if (!current) return;
+
+  canUpdateConversationTime.value = false;
+  msgInput.selectedProvider = `${current.providerId}:${current.selectedModel}`;
+  await nextTick();
+  canUpdateConversationTime.value = true;
+
+  message.value = '';
+});
+
+
 </script>
 <template>
     <!-- 路由不传id时，显示欢迎信息 -->
@@ -98,7 +171,11 @@ watch(() => listHeight.value, () => listScale.value = listHeight.value / window.
     </div>
     <div class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-3px] ">
       <resize-divider direction="horizontal" v-model:size="listHeight" :max-size="maxListHeight" :min-size="100" />
-      <message-input v-model:provider="provider" :placeholder="$t('main.conversation.placeholder')" />
+       <message-input class="p-2 pt-0" ref="msgInputRef"
+        :message="messagesStore.messageInputValueById(conversationId ?? -1)" v-model:provider="provider"
+        :placeholder="$t('main.conversation.placeholder')" :status="messageInputStatus"
+        @update:message="messagesStore.setMessageInputValue(conversationId ?? -1, $event)" @send="handleSendMessage"
+        @select="handleProviderSelect" @stop="handleStopMessage" />
     </div>
   </div>
 </template>

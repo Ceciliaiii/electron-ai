@@ -5,6 +5,7 @@ import { dataBase } from '../dataBase';
 import { useConversationsStore } from './conversations';
 import { useProvidersStore } from './providers';
 import { listenDialogueBack } from '../utils/dialogue';
+import i18n from '../i18n';
 
 const msgContentMap = new Map<number, string>();
 // 根据id获取停止该对话的method
@@ -15,11 +16,28 @@ export const useMessagesStore = defineStore('messages', () => {
   const conversationsStore = useConversationsStore();
   const providersStore = useProvidersStore();
 
+
+
   // States
   const messages = ref<Message[]>([]);
 
+  // 存储 不同对话id 对应的 不同input值
+  const messagesInputValue = ref(new Map())
+
+
+
+
   // Getters
   const allMessages = computed(() => messages.value);
+
+  // 用id获取input值
+  const messageInputValueById = computed(() => (conversationId: number) => messagesInputValue.value.get(conversationId) ?? '');
+
+  // 用id获取loading、streaming的message id
+  const loadingMsgIdsByConversationId = computed(() => (conversationId: number) => 
+    messagesByConversationId.value(conversationId).filter(message => message.status === 'loading' || message.status === 'streaming').map(message => message.id));
+
+
   // 通过对话id获取对应对话的message
   const messagesByConversationId = computed(() => (conversationId: number) => 
     messages.value.filter(message => message.conversationId === conversationId)
@@ -43,6 +61,12 @@ export const useMessagesStore = defineStore('messages', () => {
     // 若重复查询一条msg (store & dataBase)，只返回store中的msg
     messages.value = uniqueByKey([...messages.value, ...saved], 'id');
   }
+
+
+  function setMessageInputValue(conversationId: number, value: string) {
+    messagesInputValue.value.set(conversationId, value);
+  }
+
 
   const _updateConversation = async (conversationId: number) => {
     const conversation = await dataBase.conversations.get(conversationId);
@@ -138,6 +162,21 @@ export const useMessagesStore = defineStore('messages', () => {
   }
 
 
+
+  async function stopMessage(id: number, update: boolean = true) {
+    const stop = stopMethods.get(id)
+    stop && stop?.()
+    if(update) {
+      const msgContent = messages.value.find(message => message.id === id)?.content || ''
+      await updateMessage(id, {
+        status: 'success',
+        updatedAt: Date.now(),
+        content: msgContent ? msgContent + i18n.global.t('main.message.stopGeneration') : void 0,
+      })
+    }
+  }
+
+
   // 改  传入当前message的唯一id和更新内容
   async function updateMessage(id: number, updates: Partial<Message>) {
     // 获取当前message，更新到数据库、响应式数组中
@@ -167,10 +206,14 @@ export const useMessagesStore = defineStore('messages', () => {
     messages,
     allMessages,
     messagesByConversationId,
+    messageInputValueById,
+    loadingMsgIdsByConversationId,
     initialize,
     addMessage,
     sendMessage,
     updateMessage,
     deleteMessage,
+    setMessageInputValue,
+    stopMessage
   }
 });
