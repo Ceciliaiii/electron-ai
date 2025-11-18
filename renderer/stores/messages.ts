@@ -21,7 +21,7 @@ export const useMessagesStore = defineStore('messages', () => {
   // States
   const messages = ref<Message[]>([]);
 
-  // 存储 不同对话id 对应的 不同input值
+  // 存储 <conversationId, inputValue>
   const messagesInputValue = ref(new Map())
 
 
@@ -63,6 +63,7 @@ export const useMessagesStore = defineStore('messages', () => {
   }
 
 
+  // 修改input草稿值
   function setMessageInputValue(conversationId: number, value: string) {
     messagesInputValue.value.set(conversationId, value);
   }

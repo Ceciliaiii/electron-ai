@@ -41,6 +41,7 @@ export default defineConfig({
           { text: '22. message存储与更新', link: '/22-messageStore' },
           { text: '23. 主进程接入大模型', link: '/23-接入大模型' },
           { text: '24. 渲染进程接入大模型', link: '/24-第一次对话' },
+          { text: '25. 输入框草稿 & 按钮状态', link: '/25-messageInput' },
         ]
       }
     ],

@@ -31,6 +31,8 @@ const selectedModel = computed(() => ((provider.value as string)?.split(':')[1] 
 // 对话项id
 const conversationId = computed(() => Number(route.params.id) as number | undefined);
 
+
+// 按钮状态切换
 const isStoping = ref(false);
 const messageInputStatus = computed(() => {
   if (isStoping.value) return 'loading';
@@ -76,6 +78,7 @@ async function handleSendMessage() {
     content,
     conversationId: _conversationId,
   })
+  // 发送完，清空input
   messagesStore.setMessageInputValue(_conversationId, '');
 }
 
@@ -144,7 +147,8 @@ watch([() => conversationId.value, () => msgInputRef.value], async ([id, msgInpu
   await nextTick();
   canUpdateConversationTime.value = true;
 
-  message.value = '';
+  // 切换对话，清空首页input
+  // message.value = '';
 });
 
 
