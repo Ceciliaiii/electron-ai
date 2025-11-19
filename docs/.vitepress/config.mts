@@ -42,6 +42,7 @@ export default defineConfig({
           { text: '23. 主进程接入大模型', link: '/23-接入大模型' },
           { text: '24. 渲染进程接入大模型', link: '/24-第一次对话' },
           { text: '25. 输入框草稿 & 按钮状态', link: '/25-messageInput' },
+          { text: '26. 时间格式化 & 自动滚底', link: '/26-timeFormate & scrollBottom' },
         ]
       }
     ],
