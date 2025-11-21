@@ -10,7 +10,7 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: '开始', link: '/1-项目初始化' },
-      // { text: '使用示例', link: '/项目初始化' }
+      { text: '应用下载', link: 'https://vitepress.dev/reference/default-theme-home-page' }
     ],
     search: {
       provider: 'local',
@@ -45,6 +45,7 @@ export default defineConfig({
           { text: '24. 渲染进程接入大模型', link: '/24-第一次对话' },
           { text: '25. 输入框草稿 & 按钮状态', link: '/25-messageInput' },
           { text: '26. 时间格式化 & 自动滚底', link: '/26-timeFormate & scrollBottom' },
+          { text: '27. MessageRender完善', link: '/27-messageRender完善' },
         ]
       }
     ],

@@ -10,10 +10,9 @@ hero:
     - theme: brand
       text: 开始
       link: /1-项目初始化.md
-    # - theme: alt
-    #   text: 使用示例
-    #   link: /api-examples
-
+    - theme: alt
+      text: 下载应用
+      link: https://vitepress.dev/reference/default-theme-home-page
 # features:
 #   - title: Feature A
 #     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
