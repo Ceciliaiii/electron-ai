@@ -12,7 +12,9 @@ export default defineConfig({
       { text: '开始', link: '/1-项目初始化' },
       // { text: '使用示例', link: '/项目初始化' }
     ],
-
+    search: {
+      provider: 'local',
+    },
     sidebar: [
       {
         text: 'elctron-ai开发文档',
