@@ -6,13 +6,16 @@ import ConversationList from './components/ConversationList/Index.vue';
 import { initProviders } from './dataBase';
 import { useProvidersStore } from './stores/providers';
 import { logger } from './utils/logger';
+import { useConversationsStore } from './stores/conversations';
 
 const sidebarWidth = ref(320);
 const { initialize: initializeProvidersStore } = useProvidersStore();
+const { initialize: initializeConversationsStore } = useConversationsStore();
 
 onMounted(async () => {
   await initProviders();
   await initializeProvidersStore();
+  await initializeConversationsStore();
   logger.info('App mounted');
 });
 </script>

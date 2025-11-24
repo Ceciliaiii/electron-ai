@@ -47,6 +47,7 @@ export default defineConfig({
           { text: '26. 时间格式化 & 自动滚底', link: '/26-timeFormate & scrollBottom' },
           { text: '27. MessageRender完善', link: '/27-messageRender完善' },
           { text: '28. markdown排版 & 代码高亮', link: '/28-md排版&代码高亮' },
+          { text: '29. （遗漏）同步对话列表数据', link: '/29-对话列表初始化' },
         ]
       }
     ],
