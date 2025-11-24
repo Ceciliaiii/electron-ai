@@ -46,6 +46,7 @@ export default defineConfig({
           { text: '25. 输入框草稿 & 按钮状态', link: '/25-messageInput' },
           { text: '26. 时间格式化 & 自动滚底', link: '/26-timeFormate & scrollBottom' },
           { text: '27. MessageRender完善', link: '/27-messageRender完善' },
+          { text: '28. markdown排版 & 代码高亮', link: '/28-md排版&代码高亮' },
         ]
       }
     ],

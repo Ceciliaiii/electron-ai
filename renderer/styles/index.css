@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "./theme/index.css";
-
+@plugin "@tailwindcss/typography";
 
 /* 不让用户光标选择，与网页区分 */
 * {

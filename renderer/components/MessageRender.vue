@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import VueMarkdown from 'vue-markdown-render';
+import markdownItHighlightjs from 'markdown-it-highlightjs';
 
 defineOptions({ name: 'MessageRender' });
 const props = defineProps<{
@@ -75,10 +76,21 @@ watch(() => props.isStreaming, async (newVal, oldVal) => {
 </script>
 <template>
   <template v-if="content?.trim()?.length">
-    <VueMarkdown :id="renderId" :source="content" />
+    <!-- prose 类，屏蔽tailwindcss的reset，prose-pre去除代码块默认的padding框 -->
+    <VueMarkdown class='prose dark:prose-invert prose-slate prose-pre:p-0 prose-headings:pt-3 text-inherit' 
+    :plugins="[markdownItHighlightjs]"
+    :id="renderId" :source="content" 
+    />
   </template>
   <span v-else class="_cursor">{{ t('main.message.rendering') }}</span>
 </template>
+
+<!-- 继承字体字号 -->
+<style scoped>
+.prose {
+  font-size: inherit
+}
+</style>
 
 <style>
 ._cursor::after {

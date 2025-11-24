@@ -11,6 +11,15 @@ import App from '../renderer/App.vue';
 import TitleBar from './components/TitleBar.vue';
 import DragRegion from './components/DragRegion.vue';
 
+import hljs from 'highlight.js/lib/core'
+import xml from 'highlight.js/lib/languages/xml'
+
+/* 
+  后续可以根据需要引入其他语言识别
+*/
+// 识别vue为xml语言
+hljs.registerLanguage('vue', xml)
+
 
 // 直接注册到vue实例上，不需要在script语块引入这俩组件
 const components: Plugin = function (app: any) {
