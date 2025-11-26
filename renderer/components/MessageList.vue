@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import type { Message } from '../../common/types';
 
-import { NScrollbar } from 'naive-ui'
+import { NScrollbar, NCheckbox, NButton,  useMessage } from 'naive-ui'
 import { useBatchTimeAgo } from '../hooks/useTimeAgo'
 import MessageRender from './MessageRender.vue';
+import { MENU_IDS, MESSAGE_ITEM_MENU_IDS } from '../../common/constants';
+import { createContextMenu } from '../utils/contextMenu';
+import { useDialog } from '../hooks/useDialog';
+import { useMessagesStore } from '../stores/messages'
 
 
 defineOptions({ name: 'MessageList' });
@@ -12,9 +16,87 @@ const props = defineProps<{
   messages: Message[];
 }>();
 
-const route = useRoute();
+const isBatchMode = ref(false);
+const checkedIds = ref<number[]>([]);
 
+// 选中状态
+const itemChecked = computed(() => (msgId: number) => checkedIds.value.includes(msgId));
+
+const route = useRoute();
+const message = useMessage();  
+// 需要在app用n-message-provider包裹，依赖 “上下文注入” 机制
+// n-message-provider暴露（provide）消息管理器实例给useMessage（inject）
+// n-config-provider是全局配置provide，message依赖其全局配置（暗黑、i18n）
+
+const { createDialog } = useDialog();
+const { deleteMessage } = useMessagesStore();
 const { formatTimeAgo } = useBatchTimeAgo();
+const { t } = useI18n();
+
+
+// 消息项操作策略
+const messageActionPolicy = new Map<MESSAGE_ITEM_MENU_IDS, (msgId: number) => Promise<void>>([
+  // 复制消息
+  [MESSAGE_ITEM_MENU_IDS.COPY, async (msgId) => {
+    const msg = props.messages.find(msg => msg.id === msgId);
+    if (!msg) return;
+    navigator.clipboard.writeText(msg.content).then(() => {
+      message.success(t('main.message.dialog.copySuccess'));
+    });
+  }],
+  // 删除消息
+  [MESSAGE_ITEM_MENU_IDS.DELETE, async (msgId) => {
+    const res = await createDialog({
+      title: 'main.message.dialog.title',
+      content: 'main.message.dialog.messageDelete',
+    });
+    if (res === 'confirm') deleteMessage(msgId);
+  }],
+  // 选择消息
+  [MESSAGE_ITEM_MENU_IDS.SELECT, async (msgId) => {
+    checkedIds.value = [...checkedIds.value, msgId];
+    isBatchMode.value = true;
+  }],
+]);
+
+
+// 右键创建菜单
+async function handleContextMenu(msgId: number) {
+  const clickItem = await createContextMenu(MENU_IDS.MESSAGE_ITEM);
+  const action = messageActionPolicy.get(clickItem as MESSAGE_ITEM_MENU_IDS);
+  action && await action(msgId);
+}
+
+
+// 多选框 选中、取消选择
+function handleCheckItem(id: number, val: boolean) {
+  if (val && !checkedIds.value.includes(id)) {
+    // 多选中一个消息
+    checkedIds.value = [...checkedIds.value, id];  
+  } else {
+    // 取消选择
+    checkedIds.value = checkedIds.value.filter(_id => _id !== id);
+  }
+}
+
+// 批量删除
+async function handleBatchDelete() {
+  const res = await createDialog({
+    title: 'main.message.dialog.title',
+    content: 'main.message.dialog.batchDelete',
+  });
+  if (res === 'confirm') {
+    checkedIds.value.forEach(id => deleteMessage(id));
+    quitBatchMode();
+  }
+}
+
+// 退出批量模式
+function quitBatchMode() {
+  isBatchMode.value = false;
+  checkedIds.value = [];
+}
+
 
 
 // 容器与滚动内容的class
@@ -72,8 +154,9 @@ onMounted(() => {
   <div class="flex flex-col h-full">
     <n-scrollbar class="message-list px-5 pt-6">
       <div class="message-list-item mt-3 pb-5 flex items-center" v-for="message in messages" :key="message.id">
-        <div class="pr-5" v-show="false">
-          <!-- TODO: 多选message checkbox -->
+        <div class="pr-5" v-show="isBatchMode">
+          <!-- 多选message checkbox -->
+          <n-checkbox :checked="itemChecked(message.id)" @update:checked="handleCheckItem(message.id, $event)" />
         </div>
         <div class="flex flex-auto"
           :class="{ 'justify-end': message.type === 'question', 'justify-start': message.type === 'answer' }">
@@ -84,7 +167,8 @@ onMounted(() => {
               {{ formatTimeAgo(message.createdAt) }}
             </div>
             <!-- 提问时 -->
-            <div class="msg-shadow p-2 rounded-md bg-bubble-self text-white" v-if="message.type === 'question'">
+            <div class="msg-shadow p-2 rounded-md bg-bubble-self text-white" v-if="message.type === 'question'"
+            @contextmenu="handleContextMenu(message.id)">
                 <!-- md文档流渲染 -->
               <message-render :msg-id="message.id" :content="message.content"
                 :is-streaming="message.status === 'streaming'" />
@@ -95,7 +179,8 @@ onMounted(() => {
               'text-tx-primary': message.status !== 'error',
               'text-red-300': message.status === 'error',
               'font-bold': message.status === 'error'
-            }">
+            }"
+            @contextmenu="handleContextMenu(message.id)">
             <!-- loading中 -->
               <template v-if="message.status === 'loading'">
                 ...
@@ -110,6 +195,13 @@ onMounted(() => {
         </div>
       </div>
     </n-scrollbar>
+
+    <!-- 批量操作区域 -->
+     <div v-show="isBatchMode" class="flex justify-between p-2 border-t-3 border-input">
+      <n-button type="error" size="tiny" @click="handleBatchDelete">{{ t('main.message.batchActions.deleteSelected')
+        }}</n-button>
+      <n-button type="primary" size="tiny" quaternary @click="quitBatchMode">{{ t('dialog.cancel') }}</n-button>
+    </div>
   </div>
 </template>
 

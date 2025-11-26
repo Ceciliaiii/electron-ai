@@ -22,7 +22,9 @@ const _findLastElement = (target: HTMLElement): Element | void => {
   // 可能该元素就是最后一个元素
   let lastElement: Element | void = target.lastElementChild ?? target;
 
-  // TODO: PRE(代码块 hljs)
+  // PRE(代码块 hljs)，让光标显示在代码内容末尾，非pre标签末尾
+  if (lastElement && lastElement.tagName === 'PRE')
+    lastElement = lastElement.getElementsByClassName('hljs')[0] ?? lastElement
 
   // 若最后一个元素是列表（ol/ul），查找内部最后一个元素
   if (lastElement && isList(lastElement)) {
