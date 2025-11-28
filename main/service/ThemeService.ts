@@ -1,14 +1,16 @@
 // main/services/ThemeService.ts
 import { BrowserWindow, ipcMain, nativeTheme } from 'electron';
 import { logManager } from './LogService';
-import { IPC_EVENTS } from '../../common/constants'
+import { IPC_EVENTS, CONFIG_KEYS } from '../../common/constants'
+import { configManager } from './ConfigService';
 
 class ThemeService {
   private static _instance: ThemeService;
   private _isDark: boolean = nativeTheme.shouldUseDarkColors;
 
   constructor() {
-    const themeMode = 'dark';
+    // 读取先前的主题配置，持久化主题
+    const themeMode = configManager.get(CONFIG_KEYS.THEME_MODE);
     if (themeMode) {
       nativeTheme.themeSource = themeMode;
       this._isDark = nativeTheme.shouldUseDarkColors;
@@ -20,6 +22,7 @@ class ThemeService {
   private _setupIpcEvent() {
     ipcMain.handle(IPC_EVENTS.SET_THEME_MODE, (_e, mode: ThemeMode) => {
       nativeTheme.themeSource = mode;
+      configManager.set(CONFIG_KEYS.THEME_MODE, mode);  // 更新主题配置
       return nativeTheme.shouldUseDarkColors;
     });
     ipcMain.handle(IPC_EVENTS.GET_THEME_MODE, () => {

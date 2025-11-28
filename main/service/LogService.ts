@@ -22,7 +22,7 @@ class LogService {
 
   private constructor() {
     const logPath = path.join(app.getPath('userData'), 'logs');
-    // c:users/{username}/AppData/Roaming/{appName}/logs
+    // C:\Users\86134\AppData\Roaming\{AppName}\logs
 
     // 创建日志目录
     try {

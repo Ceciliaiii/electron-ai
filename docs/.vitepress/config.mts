@@ -49,6 +49,7 @@ export default defineConfig({
           { text: '28. markdown排版 & 代码高亮', link: '/28-md排版&代码高亮' },
           { text: '29. （遗漏）同步对话列表数据', link: '/29-对话列表初始化' },
           { text: '30. 消息项的菜单实现', link: '/30-msgMenu' },
+          { text: '31. Settings 配置服务', link: '/31-configService' },
         ]
       }
     ],
