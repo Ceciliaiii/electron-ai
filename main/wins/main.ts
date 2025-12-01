@@ -5,7 +5,7 @@ import { menuManager } from '../service/MenuService';
 import { logManager } from '../service/LogService';
 import { createProvider } from '../providers';
 import configManager from 'main/service/ConfigService';
-import { config } from 'process';
+// import { config } from 'process';
 
 
 // 注册菜单
@@ -102,7 +102,7 @@ export function setupMainWindow() {
     configManager.onConfigChange((config) => {
       if(minimizeToTray === config[CONFIG_KEYS.MINIMIZE_TO_TRAY]) return;
       minimizeToTray = config[CONFIG_KEYS.MINIMIZE_TO_TRAY];  // 更新
-      // todo：配置变化，触发最小化托盘服务初始化，切换最小化状态
+      // todo：配置变化，触发最小化托盘服务初始化，切换最小化状态（开启or关闭）
     })
     registerMenus(mainWindow);
   });

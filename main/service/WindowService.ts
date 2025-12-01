@@ -56,8 +56,10 @@ class WindowService {
 
   private _isReallyClose(windowName: WindowNames | void) {
     if (windowName === WINDOW_NAMES.MAIN) 
-      // 主窗口关闭，则关闭最小化托盘
+      // 用户没开 “最小化托盘”，主窗口真销毁
+      // 用户开了 “最小化托盘”，主窗口隐藏到托盘
       return configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY) === false;
+    // 无论什么情况，设置窗口关闭时都不真销毁
     if (windowName === WINDOW_NAMES.SETTING) return false;
 
     return true;
@@ -249,8 +251,9 @@ class WindowService {
       // 如果主窗口已关闭，则遍历其他窗口一起关闭
       return Object.values(this._winStates).forEach(win => win?.instance?.close());
 
+      // 从配置读取 是否开启 最小化到托盘
     const minimizeToTray = configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY);
-    // 如果没有最小化，并且主窗口隐藏，则遍历其他窗口一起关闭（？）
+    // 如果没有开启，并且主窗口关闭了，则遍历其他窗口一起关闭
     if (!minimizeToTray && !this.get(WINDOW_NAMES.MAIN)?.isVisible())
       return Object.values(this._winStates).forEach(win => !win?.instance?.isVisible() && win?.instance?.close());
   }
