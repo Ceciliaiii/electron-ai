@@ -1,8 +1,9 @@
 import { ipcMain, Menu, type MenuItemConstructorOptions } from 'electron';
-import { IPC_EVENTS } from '../../common/constants';
+import { CONFIG_KEYS, IPC_EVENTS } from '../../common/constants';
 import { cloneDeep } from '../../common/utils';
 import logManager from './LogService';
 import { createTranslator } from '../utils';
+import configManager from './ConfigService';
 
 // Menu.buildFromTemplate()
 // 使用翻译器
@@ -25,12 +26,12 @@ class MenuService {
   }
 
   private _setupLanguageChangeListener() {
-    //  :todo   重置i18n的t函数
-    // configManager.onConfigChange((config)=> {
-      // if(language changed)
+    // 配置语言变化，重置t函数
+    configManager.onConfigChange((config) => {
+      if(!config[CONFIG_KEYS.LANGUAGE]) return;
 
-      // t = 
-    // })
+      t = createTranslator();
+    })
   }
 
   public static getInstance() {

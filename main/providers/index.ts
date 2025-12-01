@@ -1,4 +1,10 @@
+import configManager from "../service/ConfigService";
+import { Provider } from "../../common/types";
 import { OpenAIProvider } from "./OpenAIProvider";
+import { CONFIG_KEYS } from "../../common/constants";
+import { parseOpenAISetting } from "../../common/utils";
+import logManager from "../service/LogService";
+import { decode } from "js-base64";
 
 
 // 大模型配置
@@ -54,9 +60,62 @@ const providers = [
 ];
 
 
+interface _Provider extends Omit<Provider, 'openAISetting'> {
+   openAISetting?: {
+    apiKey: string,  // 做base64转化，比较安全
+    baseURL: string,
+  };
+}
+
+// 解析config.json里的provider配置
+const _parseProvider = () => {
+  let result: Provider[] = [];
+  let isBase64Parsed = false;
+  const providerConfig = configManager.get(CONFIG_KEYS.PROVIDER);
+
+  // 返回解析openAISetting后的provider
+  const mapCallback = (provider: Provider) => ({
+    ...provider,
+    openAISetting: typeof provider.openAISetting === 'string'
+      ? parseOpenAISetting(provider.openAISetting ?? '')
+      : provider.openAISetting,
+  })
+
+  try {
+    result = JSON.parse(decode(providerConfig)) as Provider[];
+    isBase64Parsed = true;
+  } catch (error) {
+    logManager.error(`parse base64 provider failed: ${error}`);
+  }
+
+  if (!isBase64Parsed) try {
+    result = JSON.parse(providerConfig) as Provider[]
+  } catch (error) {
+    logManager.error(`parse provider failed: ${error}`);
+  }
+
+  // 若解析不到provider
+  if (!result.length) return;
+
+  return result.map(mapCallback) as _Provider[]
+}
+
+
+// 获取解析后的provider
+const getProviderConfig = () => {
+  try {
+    return _parseProvider();
+  } catch (error) {
+    logManager.error(`get provider config failed: ${error}`);
+    return null;
+  }
+}
+
+
 // 大模型调用入口
 export function createProvider(name: string) {
-  // TODO: const provider = config
+  // 获取config.json里的provider配置
+  const providers = getProviderConfig();
 
   if (!providers) {
     throw new Error('provider config not found');

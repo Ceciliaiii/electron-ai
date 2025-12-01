@@ -1,12 +1,13 @@
 import type { WindowNames } from '../../common/types';
 
-import { IPC_EVENTS, WINDOW_NAMES } from '../../common/constants';
+import { CONFIG_KEYS, IPC_EVENTS, WINDOW_NAMES } from '../../common/constants';
 import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainInvokeEvent, WebContentsView, type IpcMainEvent } from 'electron';
 import { debounce } from '../../common/utils';
 
 import logManager from './LogService';
 import themeManager from './ThemeService';
 import path from 'node:path';
+import configManager from './ConfigService';
 
 
 interface WindowState {
@@ -54,7 +55,9 @@ class WindowService {
   }
 
   private _isReallyClose(windowName: WindowNames | void) {
-    if (windowName === WINDOW_NAMES.MAIN) return true; // todo: 最小化托盘
+    if (windowName === WINDOW_NAMES.MAIN) 
+      // 主窗口关闭，则关闭最小化托盘
+      return configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY) === false;
     if (windowName === WINDOW_NAMES.SETTING) return false;
 
     return true;
@@ -246,7 +249,7 @@ class WindowService {
       // 如果主窗口已关闭，则遍历其他窗口一起关闭
       return Object.values(this._winStates).forEach(win => win?.instance?.close());
 
-    const minimizeToTray = false; // todo : 从配置中读取
+    const minimizeToTray = configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY);
     // 如果没有最小化，并且主窗口隐藏，则遍历其他窗口一起关闭（？）
     if (!minimizeToTray && !this.get(WINDOW_NAMES.MAIN)?.isVisible())
       return Object.values(this._winStates).forEach(win => !win?.instance?.isVisible() && win?.instance?.close());
