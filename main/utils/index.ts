@@ -2,8 +2,9 @@ import logManager from '../service/LogService';
 
 import en from '../../locales/en.json';
 import zh from '../../locales/zh.json';
-import configManager from 'main/service/ConfigService';
+import configManager from '../service/ConfigService';
 import { CONFIG_KEYS } from '../../common/constants';
+import path from 'node:path';
 
 type MessageSchema = typeof zh;
 const messages: Record<string, MessageSchema> = { en, zh }
@@ -24,4 +25,17 @@ export function createTranslator() {
       return key
     }
   }
+}
+
+
+// 获取logo
+let logo: string | void = void 0;
+export function createLogo() {
+  if (logo != null) {
+    return logo;
+  }
+  // vite.render.config.ts 配置了打包根目录 publicDir: 'public'
+  // path 直接从打包后的路径中获取
+  logo = path.join(__dirname, 'logo1.ico');
+  return logo;
 }

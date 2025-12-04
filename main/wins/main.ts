@@ -4,8 +4,18 @@ import { windowManager } from '../service/WindowService';
 import { menuManager } from '../service/MenuService';
 import { logManager } from '../service/LogService';
 import { createProvider } from '../providers';
-import configManager from 'main/service/ConfigService';
-// import { config } from 'process';
+import { configManager } from '../service/ConfigService';
+import { trayManager } from '../service/TrayService';
+
+
+// 托盘操作，创建 销毁
+const handleTray = (minimizeToTray: boolean) => {
+  if (minimizeToTray) {
+    trayManager.create();
+    return;
+  }
+  trayManager.destroy();
+}
 
 
 // 注册菜单
@@ -102,8 +112,12 @@ export function setupMainWindow() {
     configManager.onConfigChange((config) => {
       if(minimizeToTray === config[CONFIG_KEYS.MINIMIZE_TO_TRAY]) return;
       minimizeToTray = config[CONFIG_KEYS.MINIMIZE_TO_TRAY];  // 更新
-      // todo：配置变化，触发最小化托盘服务初始化，切换最小化状态（开启or关闭）
+      // 配置变化，切换最小化状态（开启or关闭）
+      handleTray(minimizeToTray)  // 配置变化时再次调用
     })
+
+    // 获取托盘状态，并初始化（开启or关闭）
+    handleTray(minimizeToTray)
     registerMenus(mainWindow);
   });
 

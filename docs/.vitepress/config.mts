@@ -52,6 +52,7 @@ export default defineConfig({
           { text: '31. Settings 配置服务', link: '/31-configService' },
           { text: '32. 配置服务联动其余Service', link: '/32-configService联动' },
           { text: '33. 手搓 vs 官方库', link: '/33-手搓的方法' },
+          { text: '34. 托盘服务', link: '/34-托盘服务' },
         ]
       }
     ],
