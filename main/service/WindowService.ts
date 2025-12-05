@@ -3,6 +3,7 @@ import type { WindowNames } from '../../common/types';
 import { CONFIG_KEYS, IPC_EVENTS, WINDOW_NAMES } from '../../common/constants';
 import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainInvokeEvent, WebContentsView, type IpcMainEvent } from 'electron';
 import { debounce } from '../../common/utils';
+import { createLogo } from '../utils/index.ts';
 
 import logManager from './LogService';
 import themeManager from './ThemeService';
@@ -42,6 +43,7 @@ const SHARED_WINDOW_OPTIONS = {
 
 class WindowService {
   private static _instance: WindowService;
+  private _logo = createLogo();  // 初始化时加载logo
 
   private _winStates: Record<WindowNames | string, WindowState> = {
     main: { instance: void 0, isHidden: false, onCreate: [], onClosed: [] },
@@ -266,13 +268,29 @@ class WindowService {
 
 
   // 创建窗口实例，有隐藏则返回隐藏实例，否则创建新实例
+  // 替换图标
   private _createWinInstance(name: WindowNames, opts?: BrowserWindowConstructorOptions) {
     return this._isHiddenWin(name)
       ? this._winStates[name].instance as BrowserWindow
       : new BrowserWindow({
         ...SHARED_WINDOW_OPTIONS,
+        icon: this._logo,
         ...opts,
       });
+  }
+
+
+  public focus(target: BrowserWindow | void | null) {
+    if (!target) return;
+      const name = this.getName(target);
+    if (target?.isMinimized()) {
+        target?.restore();
+        logManager.debug(`Window ${name} restored and focused`);
+      } else {
+        logManager.debug(`Window ${name} focused`);
+      }
+
+    target?.focus();
   }
 
 

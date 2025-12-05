@@ -32,6 +32,7 @@
 		"renderer/**/*.vue",
 		"renderer/**/*.tsx",
 		"**/*.ts",
-		"**/*.d.ts"
+		"**/*.d.ts",
+		"forge.env.d.ts"
 	]
 }

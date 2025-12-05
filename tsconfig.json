@@ -12,9 +12,9 @@
 		"baseUrl": "./",
 		"paths": {
 			"@common/*": ["common/*"],
-			"@main/*": ["./main/*"],
-			"@renderer/*": ["./renderer/*"],
-			"@locales/*": ["./locales/*"],
+			"@main/*": ["main/*"],
+			"@renderer/*": ["renderer/*"],
+			"@locales/*": ["locales/*"],
 		}
 	}
 }

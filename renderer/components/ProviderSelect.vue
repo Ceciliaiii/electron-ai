@@ -2,6 +2,8 @@
 import type { SelectValue } from '../types'
 import { NSelect, NButton } from 'naive-ui';
 import { useProvidersStore } from '../stores/providers';
+import { WINDOW_NAMES } from '../../common/constants';
+import { openWindow } from '../utils/system';
 
 defineOptions({ name: 'ProviderSelect' });
 
@@ -22,7 +24,7 @@ const providerOptions = computed(() => providersStore.allProviders.map(item => (
 })))
 
 function openSettingWindow() {
-  // todo
+  openWindow(WINDOW_NAMES.SETTING);
 }
 </script>
 

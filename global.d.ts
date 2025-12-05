@@ -39,7 +39,11 @@ interface DialogueBackStream {
 }
 
 
+type WindowNames = 'main' | 'setting' | 'dialog';
+
+
 interface WindowApi {
+  openWindow: (name: WindowNames) => void;
   closeWindow: () => void;
   minimizeWindow: () => void;
   maximizeWindow: () => void;
