@@ -28,7 +28,7 @@ interface SizeOptions {
 const SHARED_WINDOW_OPTIONS = {
   titleBarStyle: 'hidden',
   show: false,        // 隐藏窗口，loading结束再展示
-  title: 'Diona',
+  title: 'Cecilia',
   darkTheme: themeManager.isDark,
   backgroundColor: themeManager.isDark ? '#2C2C2C' : '#FFFFFF',
   webPreferences: {

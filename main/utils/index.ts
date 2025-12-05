@@ -36,6 +36,6 @@ export function createLogo() {
   }
   // vite.render.config.ts 配置了打包根目录 publicDir: 'public'
   // path 直接从打包后的路径中获取
-  logo = path.join(__dirname, 'logo1.ico');
+  logo = path.join(__dirname, 'logo.ico');
   return logo;
 }

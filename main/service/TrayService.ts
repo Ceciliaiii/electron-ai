@@ -1,4 +1,4 @@
-import { Tray, Menu, ipcMain, app } from 'electron';
+import { Tray, Menu, ipcMain, app, nativeImage } from 'electron';
 import { createTranslator, createLogo } from '../utils';
 import { CONFIG_KEYS, IPC_EVENTS, WINDOW_NAMES, MAIN_WIN_SIZE } from '../../common/constants';
 
@@ -32,7 +32,7 @@ class TrayService {
 //   创建 更新 托盘
   private _updateTray() {
     if (!this._tray) {
-      this._tray = new Tray(createLogo());
+      this._tray = new Tray(nativeImage.createFromPath(createLogo()));
     }
 
     // 显示窗口
