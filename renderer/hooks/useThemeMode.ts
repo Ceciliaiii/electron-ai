@@ -1,3 +1,6 @@
+import { useConfig } from './useConfig';
+import { CONFIG_KEYS } from '../../common/constants';
+
 
 const iconMap = new Map([
   ['system', 'material-symbols:auto-awesome-outline'],
@@ -21,6 +24,8 @@ export function useThemeMode() {
 
   const themeChangeCallbacks: Array<(mode: ThemeMode) => void> = [];
 
+  const config = useConfig();
+
   function setThemeMode(mode: ThemeMode) {
     themeMode.value = mode;
     window.api.setThemeMode(mode);
@@ -32,6 +37,11 @@ export function useThemeMode() {
   function onThemeChange(callback: (mode: ThemeMode) => void) {
     themeChangeCallbacks.push(callback);
   }
+
+  // 监听theme配置，同步主题模式
+  watch(() => config[CONFIG_KEYS.THEME_MODE], (mode) => {
+    (themeMode.value !== mode) && setThemeMode(mode);
+  })
 
   onMounted(async () => {
     window.api.onSystemThemeChange((_isDark) => window.api.getThemeMode().then(res => {

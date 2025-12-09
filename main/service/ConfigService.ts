@@ -93,7 +93,7 @@ export class ConfigService {
 
   private _notifyListeners(): void {
     // 向所有窗口发送更新配置事件，同步新配置
-    BrowserWindow.getAllWindows().forEach(win => win.webContents.send(IPC_EVENTS.UPDATE_CONFIG, this._config));
+    BrowserWindow.getAllWindows().forEach(win => win.webContents.send(IPC_EVENTS.CONFIG_UPDATED, this._config));
     // 执行监听回调，main进程其他服务感知配置变化
     this._listeners.forEach(listener => listener({ ...this._config }));
   }

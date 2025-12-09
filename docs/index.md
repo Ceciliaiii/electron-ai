@@ -9,7 +9,10 @@ hero:
   actions:
     - theme: brand
       text: 开始
-      link: /1-项目初始化.md
+      link: /dev/1-项目初始化.md
+    - theme: brand
+      text: 开发心得
+      link: /learn/1-手搓的方法
     - theme: alt
       text: 下载应用
       link: https://vitepress.dev/reference/default-theme-home-page

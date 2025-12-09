@@ -7,10 +7,14 @@ import { initProviders } from './dataBase';
 import { useProvidersStore } from './stores/providers';
 import { logger } from './utils/logger';
 import { useConversationsStore } from './stores/conversations';
+import { useConfig } from './hooks/useConfig'
 
 const sidebarWidth = ref(320);
 const { initialize: initializeProvidersStore } = useProvidersStore();
 const { initialize: initializeConversationsStore } = useConversationsStore();
+
+// 全局使用响应式config
+useConfig()
 
 onMounted(async () => {
   await initProviders();

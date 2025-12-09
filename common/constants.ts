@@ -29,6 +29,7 @@ export enum IPC_EVENTS {
 
   // main to renderer
   THEME_MODE_UPDATED = 'theme-mode-updated',
+  CONFIG_UPDATED = 'config-updated',
 }
 
 

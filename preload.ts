@@ -23,6 +23,19 @@ const api: WindowApi = {
   // ipc通信render进程就绪
   viewIsReady: () => ipcRenderer.send(IPC_EVENTS.RENDERER_IS_READY),
 
+  getConfig: (key: string) => ipcRenderer.invoke(IPC_EVENTS.GET_CONFIG, key),
+  // 单值更新
+  setConfig: (key: string, value: any) => ipcRenderer.send(IPC_EVENTS.SET_CONFIG, key, value),
+  // 批量更新
+  updateConfig: (value: any) => ipcRenderer.send(IPC_EVENTS.UPDATE_CONFIG, value),
+
+  onConfigChange: (callback: (config: any) => void) => {
+    ipcRenderer.on(IPC_EVENTS.CONFIG_UPDATED, (_, config) => callback(config));
+    return () => ipcRenderer.removeListener(IPC_EVENTS.CONFIG_UPDATED, callback);
+  },
+
+  removeConfigChangeListener: (cb: (config: any) => void) => ipcRenderer.removeListener(IPC_EVENTS.CONFIG_UPDATED, cb),
+
   // render进程创建dialog窗口，处理dialog按钮交互（confirm | cancel）
   createDialog: (params: CreateDialogProps) => new Promise(async (resolve) => {
     // 向主进程发送请求创建dialog，并传递params，接收resolve回调
