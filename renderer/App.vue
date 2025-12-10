@@ -7,14 +7,20 @@ import { initProviders } from './dataBase';
 import { useProvidersStore } from './stores/providers';
 import { logger } from './utils/logger';
 import { useConversationsStore } from './stores/conversations';
-import { useConfig } from './hooks/useConfig'
+import { useFontSize } from './hooks/useFontSize'
+import { useNaiveLocale } from './hooks/useNaiveLocale'
+import { useNaiveTheme } from './hooks/useNaiveTheme'
 
 const sidebarWidth = ref(320);
 const { initialize: initializeProvidersStore } = useProvidersStore();
 const { initialize: initializeConversationsStore } = useConversationsStore();
 
-// 全局使用响应式config
-useConfig()
+// 联动useConfig
+useFontSize();
+const { locale, dateLocale } = useNaiveLocale();
+const { theme, themeOverrides } = useNaiveTheme();
+
+
 
 onMounted(async () => {
   await initProviders();
@@ -24,7 +30,9 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <n-config-provider class="h-full w-[100vw] flex text-tx-primary">
+  <n-config-provider class="h-full w-[100vw] flex text-tx-primary"
+  :locale="locale" :date-locale="dateLocale"
+  :theme="theme" :theme-overrides="themeOverrides">
     <n-message-provider>
       <aside class="sidebar h-full flex flex-shrink-0 flex-col" :style="{ width: sidebarWidth + 'px' }">
         <div class="flex-auto flex">

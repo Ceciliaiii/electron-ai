@@ -40,6 +40,7 @@ export default [
           { text: '33. 托盘服务', link: '/33-托盘服务' },
           { text: '34. 引入设置窗口', link: '/34-settingWin' },
           { text: '35. 基础设置', link: '/35-基础设置' },
+          { text: '36. 主题色与字体统一', link: '/36-主题色和字体config' },
         ]
       },
       {

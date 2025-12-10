@@ -42,11 +42,12 @@ export class ConfigService {
     const duration = 200;
     // 防抖避免频繁设置
     const handelUpdate = debounce((val) => this.update(val), duration);
+    const handleSet = debounce((key, val) => this.set(key, val), duration);
 
     // render获取单个配置项，main通过get返回对应值
     ipcMain.handle(IPC_EVENTS.GET_CONFIG, (_, key) => this.get(key));
     // render设置单个配置项，main通过set更新并保存
-    ipcMain.on(IPC_EVENTS.SET_CONFIG, (_, key, val) => this.set(key, val));
+    ipcMain.on(IPC_EVENTS.SET_CONFIG, (_, key, val) => handleSet(key, val));
     // render批量更新配置，main通过update更新并保存
     ipcMain.on(IPC_EVENTS.UPDATE_CONFIG, (_, updates) => handelUpdate(updates));
   }

@@ -2,6 +2,15 @@
 import type { Ref } from 'vue';
 import { NConfigProvider } from 'naive-ui';
 
+import { useFontSize } from '../../hooks/useFontSize'
+import { useNaiveLocale } from '../../hooks/useNaiveLocale'
+import { useNaiveTheme } from '../../hooks/useNaiveTheme'
+
+// 联动useConfig
+useFontSize()
+const { theme, themeOverrides } = useNaiveTheme();
+const { locale, dateLocale } = useNaiveLocale();
+
 const { t } = useI18n();
 
 const params: Ref<CreateDialogProps> = ref({
@@ -26,7 +35,10 @@ function handleConfirm() {
 </script>
 
 <template>
-  <n-config-provider class="h-screen w-full flex flex-col">
+  <n-config-provider class="h-screen w-full flex flex-col"
+  :locale="locale" :date-locale="dateLocale"
+  :theme="theme" :theme-overrides="themeOverrides"
+  >
     <title-bar class="h-[30px]" :is-minimizable="false" :is-maximizable="false">
       <drag-region class="p-3 text-sm font-bold text-tx-primary">
         {{ t(params.title ?? '') }}
