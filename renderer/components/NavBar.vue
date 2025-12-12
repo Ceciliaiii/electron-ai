@@ -2,6 +2,7 @@
 import { Icon as IconifyIcon } from '@iconify/vue';
 import DragRegion from './DragRegion.vue';
 import ThemeSwitcher from './ThemeSwitcher.vue';
+import LangSwitcher from './LangSwitcher.vue';
 import NativeTooltip from './NativeTooltip.vue';
 import { WINDOW_NAMES } from '../../common/constants';
 import { openWindow } from '../utils/system';
@@ -22,6 +23,7 @@ function openSettingWindow() {
   <drag-region>
     <nav
       class="h-[calc(100%-1.4rem)] flex flex-col px-4 py-2 mt-[.7rem] mb-[.7rem] border-r border-r-input text-tx-secondary">
+      
       <ul class="flex-auto">
         <li class="sidebar-item no-drag cursor-pointer hover:text-primary-hover text-tx-primary"
         :class="{'active':route.name === 'conversation'}">
@@ -33,6 +35,9 @@ function openSettingWindow() {
       <ul>
         <li class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle">
           <theme-switcher />
+        </li>
+        <li class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle">
+          <lang-switcher />
         </li>
         <li class="sidebar-item no-drag cursor-pointer hover:text-primary-subtle" @click="openSettingWindow">
           <native-tooltip :content="t('main.sidebar.settings')">
