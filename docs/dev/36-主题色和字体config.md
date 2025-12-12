@@ -301,6 +301,7 @@ const { theme, themeOverrides } = useNaiveTheme();
 ```html
 <!-- navbar.vue -->
 
+<!-- 对话 tooltip -->
 <li :class="{'active':route.name === 'conversation'}">
     <native-tooltip :content="t('main.sidebar.conversations')">
         <iconify-icon icon="material-symbols:chat-outline" width="24"height="24">

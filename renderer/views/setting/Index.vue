@@ -5,6 +5,7 @@ import { useConfig } from '../../hooks/useConfig';
 import { useFontSize } from '../../hooks/useFontSize'
 import { useNaiveLocale } from '../../hooks/useNaiveLocale'
 import { useNaiveTheme } from '../../hooks/useNaiveTheme'
+import ProvidersConfig from './providers.vue';
 
 // 联动useConfig
 useFontSize()
@@ -83,8 +84,7 @@ function onWindowClose(){
             </n-form>
           </n-tab-pane>
           <n-tab-pane name="provider" :tab="t('settings.provider.modelConfig')">
-            <!-- <providers-config /> -->
-            providers-config
+            <providers-config />
           </n-tab-pane>
         </n-tabs>
       </n-scrollbar>
