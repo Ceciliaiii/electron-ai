@@ -1,7 +1,7 @@
 import type { WindowNames } from '../../common/types';
 
 import { CONFIG_KEYS, IPC_EVENTS, WINDOW_NAMES } from '../../common/constants';
-import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainInvokeEvent, WebContentsView, type IpcMainEvent } from 'electron';
+import { app, BrowserWindow, BrowserWindowConstructorOptions, ipcMain, IpcMainInvokeEvent, WebContentsView, type IpcMainEvent } from 'electron';
 import { debounce } from '../../common/utils';
 import { createLogo } from '../utils/index.ts';
 
@@ -9,6 +9,7 @@ import logManager from './LogService';
 import themeManager from './ThemeService';
 import path from 'node:path';
 import configManager from './ConfigService';
+import shortcutManager from './ShortcutService.ts';
 
 
 interface WindowState {
@@ -117,6 +118,9 @@ class WindowService {
       size
     })
 
+    // 注册快捷键
+    this._handleWindowShortcuts(window);
+
     // 若没有隐藏窗口（未打开过），则打开并且记录实例
     if (!isHiddenWin) {
       this._winStates[name].instance = window;
@@ -129,6 +133,34 @@ class WindowService {
     }
 
     return window;
+  }
+
+
+  private _handleWindowShortcuts(win: BrowserWindow) {
+
+    // 打包状态
+    const isPackaged = app.isPackaged;
+
+    const proxyCloseEvent = () => {
+      // ctrl+w alt+f4 都要执行close，否则再次打开不注册功能
+      this.close(win, this._isReallyClose(this.getName(win)));
+      // 屏蔽默认行为
+      return true
+    }
+    shortcutManager.registerForWindow(win, (input) => {
+      if((input.key === 'F4' && input.alt) && process.platform !== 'darwin')
+        return proxyCloseEvent();
+      if(input.code === 'keyW' && input.modifiers.includes('Control'))
+        return proxyCloseEvent();
+      if(!isPackaged) return
+
+      // 禁用开发者工具
+      if(input.type === 'keyDown' && 
+        input.code === 'keyI' && 
+        input.modifiers.includes('Control') && 
+        input.modifiers.includes('Shift')) 
+        return true;
+    })
   }
 
   

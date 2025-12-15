@@ -1,11 +1,12 @@
 import { ipcMain, type BrowserWindow } from 'electron';
-import { WINDOW_NAMES, MAIN_WIN_SIZE, IPC_EVENTS, MENU_IDS, CONVERSATION_ITEM_MENU_IDS, CONVERSATION_LIST_MENU_IDS, MESSAGE_ITEM_MENU_IDS, CONFIG_KEYS } from '../../common/constants';
+import { WINDOW_NAMES, MAIN_WIN_SIZE, IPC_EVENTS, MENU_IDS, CONVERSATION_ITEM_MENU_IDS, CONVERSATION_LIST_MENU_IDS, MESSAGE_ITEM_MENU_IDS, CONFIG_KEYS, SHORTCUT_KEYS } from '../../common/constants';
 import { windowManager } from '../service/WindowService';
 import { menuManager } from '../service/MenuService';
 import { logManager } from '../service/LogService';
 import { createProvider } from '../providers';
 import { configManager } from '../service/ConfigService';
 import { trayManager } from '../service/TrayService';
+import { shortcutManager } from '../service/ShortcutService';
 
 
 // 托盘操作，创建 销毁
@@ -105,6 +106,32 @@ const registerMenus = (window: BrowserWindow) => {
   ])
 }
 
+
+const destroyMenus = () => {
+  menuManager.destroyMenu(MENU_IDS.CONVERSATION_ITEM)
+  menuManager.destroyMenu(MENU_IDS.CONVERSATION_LIST)
+  menuManager.destroyMenu(MENU_IDS.MESSAGE_ITEM)
+}
+
+
+const registerShortcuts = (window: BrowserWindow) => {
+  shortcutManager.registerForWindow(window, (input) => {
+    // input.modifiers.length === 0 必须加
+    // 因为意外情况：shift+enter，仅检测到enter即刻发送，检测不到shift
+    if(input.code === 'Enter' && input.modifiers.length === 0) {
+      window.webContents.send(IPC_EVENTS.SHORTCUT_CALLED + SHORTCUT_KEYS.SEND_MESSAGE);
+    }
+
+    // 换行快捷键，单独处理
+    if(input.code === 'Enter' && input.modifiers.includes('shift')) {
+      return false;
+    }
+
+    return false
+  })
+}
+
+
 export function setupMainWindow() {
   windowManager.onWindowCreate(WINDOW_NAMES.MAIN, (mainWindow: any) => {
     let minimizeToTray = configManager.get(CONFIG_KEYS.MINIMIZE_TO_TRAY)
@@ -119,7 +146,15 @@ export function setupMainWindow() {
     // 获取托盘状态，并初始化（开启or关闭）
     handleTray(minimizeToTray)
     registerMenus(mainWindow);
+    // 注册发送快捷键
+    registerShortcuts(mainWindow);
   });
+
+
+  // 窗口关闭，销毁菜单
+  windowManager.onWindowClosed(WINDOW_NAMES.MAIN, () => {
+    destroyMenus();
+  })
 
   windowManager.create(WINDOW_NAMES.MAIN, MAIN_WIN_SIZE);
 
@@ -168,3 +203,6 @@ export function setupMainWindow() {
     }
   })
 }
+
+
+export default setupMainWindow;

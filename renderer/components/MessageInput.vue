@@ -2,6 +2,8 @@
 import type { SelectValue } from '../types';
 import { Icon as IconifyIcon } from '@iconify/vue';
 import { NButton, NIcon } from 'naive-ui';
+import { listenShortcut } from '../utils/shortcut';
+import { SHORTCUT_KEYS } from '../../common/constants';
 
 import ProviderSelect from './ProviderSelect.vue';
 import NativeTooltip from './NativeTooltip.vue';
@@ -56,7 +58,20 @@ function handleSend() {
   emits('send', message.value);
 }
 
+
+// enter快捷键操作
+const removeShortcutListener = listenShortcut(SHORTCUT_KEYS.SEND_MESSAGE, () => {
+  if(props.status === 'streaming') return;
+  if(isBtnDisabled.value) return;
+  if(!focused.value) return;
+
+  // 条件筛选完毕，再发送
+  handleSend()
+});
+
 watch(() => selectedProvider.value, (val) => emits('select', val));
+
+onUnmounted(() => removeShortcutListener())
 
 defineExpose({
   selectedProvider,

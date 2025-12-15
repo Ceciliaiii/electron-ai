@@ -3,7 +3,7 @@ import { createTranslator, createLogo } from '../utils';
 import { CONFIG_KEYS, IPC_EVENTS, WINDOW_NAMES, MAIN_WIN_SIZE } from '../../common/constants';
 
 import logManager from './LogService';
-// TODO: shortcutManager
+import shortcutManager from './ShortcutService';
 import windowManager from './WindowService';
 import configManager from './ConfigService';
 
@@ -55,7 +55,8 @@ class TrayService {
 
     this._tray.setToolTip(t('tray.tooltip') ?? 'Cecilia Application');
 
-    // TODO: 依赖快捷键Service 
+    // 注册快捷键
+    shortcutManager.register('CmdorCtrl+N', 'tray-show-window', showWindow)
 
     // 托盘菜单
     this._tray.setContextMenu(Menu.buildFromTemplate([
@@ -89,14 +90,15 @@ class TrayService {
     this._updateTray();
     app.on('quit', () => {
       this.destroy();
-      //TODO: 移除快捷键
+      shortcutManager.unregister('tray-show-window')
     })
   }
   
   public destroy() {
     this._tray?.destroy();
     this._tray = null;
-    //TODO: 移除快捷键
+    // 注销快捷键
+    shortcutManager.unregister('tray-show-window')
     if (this._removeLanguageListener) {
       this._removeLanguageListener();
       this._removeLanguageListener = void 0;
