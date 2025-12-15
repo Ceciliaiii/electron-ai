@@ -43,6 +43,7 @@ export default [
           { text: '36. 主题色与字体统一', link: '/36-主题色和字体config' },
           { text: '37. Setting模型配置', link: '/37-providerSetting' },
           { text: '38. 主页面语言切换', link: '/38-语言切换' },
+          { text: '39. 快捷键', link: '/39-shortcut' },
         ]
       },
       {

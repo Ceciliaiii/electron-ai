@@ -142,13 +142,13 @@ class WindowService {
     const isPackaged = app.isPackaged;
 
     const proxyCloseEvent = () => {
-      // ctrl+w alt+f4 都要执行close，否则再次打开不注册功能
+      // ctrl+w alt+f4 都要执行close
       this.close(win, this._isReallyClose(this.getName(win)));
-      // 屏蔽默认行为
+      // 屏蔽默认行为, 否则再次打开不注册功能
       return true
     }
     shortcutManager.registerForWindow(win, (input) => {
-      if((input.key === 'F4' && input.alt) && process.platform !== 'darwin')
+      if((input.key === 'F4' && input.alt) && (process.platform !== 'darwin'))
         return proxyCloseEvent();
       if(input.code === 'keyW' && input.modifiers.includes('Control'))
         return proxyCloseEvent();
