@@ -2,6 +2,7 @@
 import type { SelectValue } from '../types';
 import { CONFIG_KEYS, MAIN_WIN_SIZE } from '../../common/constants';
 import { throttle } from '../../common/utils';
+import { logoData } from '../logoBase64';
 // import { messages } from '../testData';
 
 import ResizeDivider from '../components/ResizeDivider.vue';
@@ -173,8 +174,9 @@ watch([() => conversationId.value, () => msgInputRef.value], async ([id, msgInpu
 <template>
     <!-- 路由不传id时，显示欢迎信息 -->
   <div class="h-full " v-if="!conversationId">
-    <div class="h-full pt-[50vh] px-5">
+    <div class="h-full pt-[45vh] px-5">
       <div class="text-3xl font-bold text-primary-subtle text-center">
+       <img :src="logoData" alt="minj" class="w-20 h-20 inline-block" />
         {{ $t('main.welcome.helloMessage') }}
       </div>
 
@@ -190,7 +192,7 @@ watch([() => conversationId.value, () => msgInputRef.value], async ([id, msgInpu
     <div class="w-full min-h-0" :style="{ height: `${listHeight}px` }">
       <message-list :messages="messagesStore.messagesByConversationId(conversationId)" />
     </div>
-    <div class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-3px] ">
+    <div class="input-container bg-bubble-others flex-auto w-[calc(100% + 10px)] ml-[-5px] ">
       <resize-divider direction="horizontal" v-model:size="listHeight" :max-size="maxListHeight" :min-size="100" />
        <message-input class="p-2 pt-0" ref="msgInputRef"
         :message="messagesStore.messageInputValueById(conversationId ?? -1)" v-model:provider="provider"

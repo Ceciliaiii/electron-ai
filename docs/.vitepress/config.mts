@@ -7,12 +7,14 @@ export default defineConfig({
   description: "AI聊天工具开发文档",
   base: '/electron-ai/',
   themeConfig: {
+    logo: '/galigoy.png',
+    siteTitle: 'Cecilia',
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
+      { text: '首页', link: '/' },
       { text: '开始', link: '/dev/1-项目初始化' },
       { text: '开发心得', link: '/learn/1-手搓的方法' },
-      { text: '应用下载', link: 'https://vitepress.dev/reference/default-theme-home-page' }
+      { text: '应用下载', link: 'https://github.com/Ceciliaiii/electron-ai/releases/' }
     ],
     search: {
       provider: 'local',

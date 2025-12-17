@@ -7,7 +7,9 @@ npm install js-base64@3.7.8
 ```
 
 ## 数据库 dexie
-使用indexedDB来存储对话列表。
+使用 indexedDB 来存储对话列表：
+ - 本地数据库只能自己使用，无法同步给别人；
+ - 远程数据库（mySql、MongoDB）可以持久共享，共同开发。
 ```ts
 // renderer/dataBase.ts
 

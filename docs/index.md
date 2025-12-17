@@ -6,6 +6,7 @@ hero:
   name: "Electron-AI"
   text: "AI聊天工具开发文档"
   tagline: Electron 开发的 AI 聊天软件
+  image: /galigoy.png
   actions:
     - theme: brand
       text: 开始
@@ -15,13 +16,19 @@ hero:
       link: /learn/1-手搓的方法
     - theme: alt
       text: 下载应用
-      link: https://vitepress.dev/reference/default-theme-home-page
-# features:
-#   - title: Feature A
-#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-#   - title: Feature B
-#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-#   - title: Feature C
-#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
----
+      link: https://github.com/Ceciliaiii/electron-ai/releases/
 
+features:
+  - icon: ⚡️
+    title: 开发过程：四大模块
+    details: 整体布局、对话列表、对话内容、设置窗口
+    # link: /dev/1-项目初始化.md
+  - icon: 🖖
+    title: 开发过程中的心得体会
+    details: 手搓方法、ipc通信的理解
+    # link: /learn/1-手搓的方法
+  - icon: 🛠️
+    title: 应用的下载地址
+    details: 安装包部署于release
+    # link: https://github.com/Ceciliaiii/electron-ai/releases/
+---

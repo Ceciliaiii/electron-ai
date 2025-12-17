@@ -1,0 +1,5 @@
+/* .vitepress/theme/my-fonts.css */
+:root {
+  --vp-font-family-base: /* 普通文本字体 */
+  --vp-font-family-mono: /* 代码字体 */
+}
