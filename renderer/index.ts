@@ -13,6 +13,8 @@ import DragRegion from './components/DragRegion.vue';
 
 import hljs from 'highlight.js/lib/core'
 import xml from 'highlight.js/lib/languages/xml'
+import { preloadIcons } from './utils/icons';
+import logger from './utils/logger';
 
 /* 
   后续可以根据需要引入其他语言识别
@@ -52,5 +54,18 @@ const router = createRouter({
 // 注册pinia
 const pinia = createPinia();
 
+// icon预加载
+preloadIcons().finally(() => {
+  logger.info('icons preloaded');
 
-createApp(App).use(pinia).use(router).use(components).use(i18n).use(errorHandler).mount('#app');
+  createApp(App)
+  .use(pinia)
+  .use(router)
+  .use(components)
+  .use(i18n)
+  .use(errorHandler)
+  .mount('#app');
+})
+
+
+

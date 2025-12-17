@@ -44,6 +44,7 @@ export default [
           { text: '37. Setting模型配置', link: '/37-providerSetting' },
           { text: '38. 主页面语言切换', link: '/38-语言切换' },
           { text: '39. 快捷键', link: '/39-shortcut' },
+          { text: '40. 优化 打包', link: '/40-打包' },
         ]
       },
       {

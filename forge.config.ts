@@ -3,13 +3,19 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 module.exports = {
   packagerConfig: {
+    name: 'Cecilia',
+    icon: '/public/logo.ico',
+    // 防止用户篡改源码，优化性能（丝滑畅快）
     asar: true,
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        setupIcon: './public/logo.ico',
+        appIcon: './public/logo.ico' 
+      },
     },
     {
       name: '@electron-forge/maker-zip',
