@@ -164,25 +164,16 @@ export default shortcutManager
 ```
 
 ## 发送消息 换行
-enter 发送消息，shift+enter 换行，在创建主窗口的时候就注册：
+ctrl+enter 发送消息，enter 换行，在创建主窗口的时候就注册；  
+如果用纯 enter 发送消息，生产环境会有 bug：
 ```ts
 // main/wins/main.ts
 
 const registerShortcuts = (window: BrowserWindow) => {
   shortcutManager.registerForWindow(window, (input) => {
-    // input.modifiers.length === 0 必须加
-    // 因为意外情况：shift+enter，仅检测到enter即刻发送，检测不到shift
-    if(input.code === 'Enter' && input.modifiers.length === 0) {
-      window.webContents.send(IPC_EVENTS.SHORTCUT_CALLED + SHORTCUT_KEYS.SEND_MESSAGE);
-    }
-
-    // 换行快捷键，单独处理
-    if(input.code === 'Enter' && input.modifiers.includes('shift')) {
-      return false;
-    }
-
-    return false
-  })
+    if (input.code === 'Enter' && input.modifiers.includes('control'))
+      window?.webContents.send(IPC_EVENTS.SHORTCUT_CALLED + SHORTCUT_KEYS.SEND_MESSAGE);
+  });
 }
 ```
 在 global.d 和 preload 定义快捷键回调方法：

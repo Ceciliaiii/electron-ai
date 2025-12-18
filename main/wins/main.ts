@@ -116,19 +116,9 @@ const destroyMenus = () => {
 
 const registerShortcuts = (window: BrowserWindow) => {
   shortcutManager.registerForWindow(window, (input) => {
-    // input.modifiers.length === 0 必须加
-    // 因为意外情况：shift+enter，仅检测到enter即刻发送，检测不到shift
-    if(input.code === 'Enter' && input.modifiers.length === 0) {
-      window.webContents.send(IPC_EVENTS.SHORTCUT_CALLED + SHORTCUT_KEYS.SEND_MESSAGE);
-    }
-
-    // 换行快捷键，单独处理
-    if(input.code === 'Enter' && input.modifiers.includes('shift')) {
-      return false;
-    }
-
-    return false
-  })
+    if (input.code === 'Enter' && input.modifiers.includes('control'))
+      window?.webContents.send(IPC_EVENTS.SHORTCUT_CALLED + SHORTCUT_KEYS.SEND_MESSAGE);
+  });
 }
 
 

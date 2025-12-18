@@ -36,7 +36,7 @@ export enum IPC_EVENTS {
 
 export enum SHORTCUT_KEYS {
   CLOSE_WINDOW = 'CmdOrCtrl+W',
-  SEND_MESSAGE = 'Enter',
+  SEND_MESSAGE = 'CmdOrCtrl+Enter',
 }
 
 
