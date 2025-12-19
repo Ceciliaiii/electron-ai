@@ -6,7 +6,7 @@ hero:
   name: "Electron-AI"
   text: "AI聊天工具开发文档"
   tagline: Electron 开发的 AI 聊天软件
-  image: /galigoyPress.svg
+  image: /logo.svg
   alt: Cecilia
   actions:
     - theme: brand
