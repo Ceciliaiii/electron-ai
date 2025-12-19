@@ -1,13 +1,20 @@
 import { defineConfig } from 'vitepress'
 import sideBar from '../sideBar'
+import { logoData } from '../../renderer/logoBase64'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "electron-ai",
   description: "AI聊天工具开发文档",
   base: '/electron-ai/',
+  head: [
+    [
+      'link',
+      { rel: 'icon', href: '/logo.ico' }
+    ],
+  ],
   themeConfig: {
-    logo: '/galigoyPress.png',
+    logo: { src: logoData },
     siteTitle: 'Cecilia',
     // https://vitepress.dev/reference/default-theme-config
     nav: [
