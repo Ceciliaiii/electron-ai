@@ -10,7 +10,11 @@ export default defineConfig({
   head: [
     [
       'link',
-      { rel: 'icon', href: '/logo.ico' }
+      { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }
+    ],
+    [
+      'link',
+      { rel: 'icon', type: 'image/png', href: '/galigoyPress.png' }
     ],
   ],
   themeConfig: {
