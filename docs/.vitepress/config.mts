@@ -30,6 +30,11 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/Ceciliaiii/electron-ai' }
-    ]
+    ],
+
+    footer: {
+      message: 'AI - Cecilia 开发文档',
+      copyright: '© 2025-至今 - Ceciliaaiii'
+    }
   }
 })
