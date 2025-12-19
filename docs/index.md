@@ -6,7 +6,7 @@ hero:
   name: "Electron-AI"
   text: "AI聊天工具开发文档"
   tagline: Electron 开发的 AI 聊天软件
-  image: /galigoy.png
+  image: /galigoyPress.png
   actions:
     - theme: brand
       text: 开始

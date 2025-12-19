@@ -7,7 +7,7 @@ export default defineConfig({
   description: "AI聊天工具开发文档",
   base: '/electron-ai/',
   themeConfig: {
-    logo: '/galigoy.png',
+    logo: '/galigoyPress.png',
     siteTitle: 'Cecilia',
     // https://vitepress.dev/reference/default-theme-config
     nav: [
