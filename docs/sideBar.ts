@@ -55,6 +55,7 @@ export default [
         items: [
             { text: '1. 理解手搓方法', link: '/1-手搓的方法' },
             { text: '2. ipc事件的理解', link: '/2-ipc事件的理解' },
+            { text: '3. 其他优化', link: '/3-其他优化' },
         ]
       }
     ]
