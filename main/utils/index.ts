@@ -9,6 +9,8 @@ import path from 'node:path';
 type MessageSchema = typeof zh;
 const messages: Record<string, MessageSchema> = { en, zh }
 
+
+// 主进程 node环境 不适合i18n
 export function createTranslator() {
   return (key?: string) => {
     if (!key) return void 0;
