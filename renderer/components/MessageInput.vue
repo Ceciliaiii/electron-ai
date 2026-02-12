@@ -69,6 +69,28 @@ const removeShortcutListener = listenShortcut(SHORTCUT_KEYS.SEND_MESSAGE, () => 
   handleSend()
 });
 
+
+// 图片上传
+const fileInput = ref<HTMLInputElement | null>();
+const imgPreview = ref();
+const triggerFileInput = () => {
+  // if(disable)
+  fileInput.value?.click();
+}
+
+const hdlImgUpload = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  
+  if(target.files && target.files.length > 0) {
+    const selectedImg = target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imgPreview.value = e.target?.result as string;
+    }
+    reader.readAsDataURL(selectedImg);
+  }
+}
+
 watch(() => selectedProvider.value, (val) => emits('select', val));
 
 onUnmounted(() => removeShortcutListener())
@@ -79,8 +101,18 @@ defineExpose({
 </script>
 
 <template>
-  <div class="message-input h-full flex flex-col">
-    <textarea class="input-area pt-4 px-2 flex-auto w-full text-tx-primary placeholder:text-tx-secondary"
+  <div class="message-input h-full flex flex-col overflow-y-auto">
+    <div v-if="imgPreview" class="m-2 flex">
+      <img :src="imgPreview" alt="Preview" class="h-18 w-18 object-cover rounded">
+    </div>
+    <div class="m-2 flex">
+      <input type="file" accept="image/*" ref="fileInput" class="hidden" @change="hdlImgUpload">
+        <native-tooltip content="上传图片">
+          <iconify-icon icon="material-symbols:imagesmode-outline-rounded" width="24" height="24" @click="triggerFileInput" />
+        </native-tooltip>
+      </input>
+    </div>
+    <textarea class="input-area pt-2 px-2 flex-auto w-full text-tx-primary placeholder:text-tx-secondary"
       :value="message" @input="message = ($event!.target as any).value" @focus="focused = true"
       @blur="focused = false"></textarea>
 
@@ -105,9 +137,11 @@ defineExpose({
 
 <style scoped>
 .input-area {
-  padding-inline: 16px;
+  padding-inline: 12px;
   border: none;
   resize: none;
+
+  /* border-top: 1px solid white; */
 }
 
 .input-area:focus {
