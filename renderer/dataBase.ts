@@ -53,6 +53,18 @@ export const providers: Provider[] = [
     createdAt: new Date().getTime(),
     updatedAt: new Date().getTime()
   },
+  {
+    id: 5,
+    name: 'qianwen',
+    title: '通义千问',
+    models: ['qwen3-vl-plus'],
+    openAISetting: stringifyOpenAISetting({
+      baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+      apiKey: '',
+    }),
+    createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime()
+  },
 ];
 
 

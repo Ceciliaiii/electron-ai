@@ -33,7 +33,7 @@ export class ShortcutService {
     private constructor() {
         this._registerDefaultShortcuts();
         this._setupAppEvents();
-        logManager.info('Shortcut service initialized')
+        logManager.info('Shortcut service initialized successfully.')
     }
 
 
