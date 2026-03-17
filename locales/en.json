@@ -21,7 +21,9 @@
       "dialog": {
         "title": "Confirm Deletion",
         "content": "Are you sure you want to delete this conversation?",
-        "content_1": "Are you sure you want to delete the selected conversations? This action cannot be undone."
+        "content_1": "Are you sure you want to delete the selected conversations? This action cannot be undone.",
+        "defaultTitle": "default title",
+        "defaultContent": "default content"
       },
       "operations": {
         "pin": "Pin Selected",

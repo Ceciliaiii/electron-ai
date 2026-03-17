@@ -14,8 +14,8 @@ const { locale, dateLocale } = useNaiveLocale();
 const { t } = useI18n();
 
 const params: Ref<CreateDialogProps> = ref({
-  title: '',
-  content: '',
+  title: 'main.conversation.dialog.defaultTitle',
+  content: 'main.conversation.dialog.defaultContent',
   confirmText: '',
   cancelText: '',
 })
@@ -41,11 +41,11 @@ function handleConfirm() {
   >
     <title-bar class="h-[30px]" :is-minimizable="false" :is-maximizable="false">
       <drag-region class="p-3 text-sm font-bold text-tx-primary">
-        {{ t(params.title ?? '') }}
+        {{ params.title ? t(params.title) : '' }}
       </drag-region>
     </title-bar>
     <p class="flex-auto p-5 text-sm text-tx-primary">
-      {{ t(params.content ?? '') }}
+      {{ params.content ? t(params.content) : '' }}
     </p>
 
     <div class="h-[40px] flex justify-end items-center gap-2 p-4 mb-[20px]">

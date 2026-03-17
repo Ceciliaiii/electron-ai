@@ -21,7 +21,9 @@
       "dialog": {
         "title": "确认删除",
         "content": "确定要删除这个对话吗？",
-        "content_1": "确定要删除选中的对话吗？此操作不可撤销。"
+        "content_1": "确定要删除选中的对话吗？此操作不可撤销。",
+        "defaultTitle": "默认标题",
+        "defaultContent": "默认内容"
       },
       "operations": {
         "pin": "置顶所选",
