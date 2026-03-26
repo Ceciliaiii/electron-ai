@@ -24,6 +24,7 @@ const checked = ref(false);
 const { isBatchOperate } = useContextMenu();
 
 const isTitleEditable = computed(() => ctx?.editId.value === props.id);
+const isActive = computed(() => ctx?.currentId.value === props.id);
 
 function updateTitle(val: string) {
   emit('updateTitle', props.id, val);
@@ -57,8 +58,8 @@ watch(() => ctx?.checkedIds.value, (val) => {
   <div class="w-full flex items-center" v-if="isBatchOperate">
     <n-checkbox :style="_CHECKBOX_STYLE_FIX" v-model:checked="checked" @click.stop />
     <div class="flex-auto">
-      <item-title :title="title" :is-editable="isTitleEditable" @update-title="updateTitle" />
+      <item-title :title="title" :is-editable="isTitleEditable" :is-active="isActive" @update-title="updateTitle" />
     </div>
   </div>
-  <item-title v-else :title="title" :is-editable="isTitleEditable" @update-title="updateTitle" />
+  <item-title v-else :title="title" :is-editable="isTitleEditable" :is-active="isActive" @update-title="updateTitle" />
 </template>

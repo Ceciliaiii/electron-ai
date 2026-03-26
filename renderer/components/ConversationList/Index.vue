@@ -101,11 +101,15 @@ async function handleItemContextMenu(item: Conversation) {
 
 // 点击对话，跳转
 function handleItemClick(item: Conversation) {
+  // 如果当前项正在重命名，不取消重命名状态也不跳转
+  if (editId.value === item.id) return;
+  editId.value = void 0;  // 取消重命名状态
   router.push(`/conversation/${item.id}`);
 }
 
 // 点击对话list以外的区域，跳转到conversation
 function handleClickOutItem() {
+  editId.value = void 0;  // 取消重命名状态
   router.push('/conversation');
 }
 
@@ -130,6 +134,7 @@ provide(CTX_KEY, {
   width: computed(() => props.width),
   editId: computed(() => editId.value),    // 注入当前编辑的id
   checkedIds: checkedIds,                  // 注入选中的id列表
+  currentId: currentId,                    // 注入当前激活的对话id
 });
 </script>
 

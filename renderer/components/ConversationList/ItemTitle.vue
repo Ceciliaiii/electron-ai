@@ -7,6 +7,7 @@ import NativeTooltip from '../NativeTooltip.vue';
 interface ItemTitleProps {
   title: string;
   isEditable: boolean;
+  isActive?: boolean;
 }
 
 defineOptions({ name: 'ItemTitle' });
@@ -56,11 +57,19 @@ onUnmounted(() => {
 
 // 监听变化
 watch([() => props.title, () => ctx?.width.value], () => updateOverflowStatus());
+
+// 进入编辑状态时，重置 _title 为当前 title
+watch(() => props.isEditable, (isEditable) => {
+  if (isEditable) {
+    _title.value = props.title;
+  }
+});
 </script>
 
 <template>
   <n-input v-if="isEditable" size="tiny" class="w-full" v-model:value="_title" @keydown.enter="updateTitle"></n-input>
-  <h2 v-else ref="titleRef" class="conversation-title w-full text-tx-secondary font-semibold loading-5 truncate">
+  <h2 v-else ref="titleRef" class="conversation-title w-full font-semibold loading-5 truncate"
+      :class="isActive ? 'text-primary' : 'text-tx-secondary'">
     <template v-if="isTitleOverflow">
       <native-tooltip :content="title">
         {{ title }}
