@@ -111,6 +111,13 @@ function _getScrollDOM() {
   return msgListDOM.getElementsByClassName(SCROLLBAR_CONTENT_CLASS_NAME)[0]
 }
 
+// 获取滚动容器（n-scrollbar-container）
+function _getScrollbarContainer() {
+  const msgListDOM = document.getElementsByClassName(MESSAGE_LIST_CLASS_NAME)[0]
+  if(!msgListDOM) return
+  return msgListDOM.querySelector('.n-scrollbar-container') as HTMLElement | undefined
+}
+
 // 原生操作DOM，自动滚动到底部
 async function scrollToBottom(behavior: ScrollIntoViewOptions['behavior'] = 'smooth') {
   await nextTick()
@@ -123,10 +130,22 @@ async function scrollToBottom(behavior: ScrollIntoViewOptions['behavior'] = 'smo
    })
 }
 
+// 检查是否在底部（允许10px误差）
+function isNearBottom(): boolean {
+  const container = _getScrollbarContainer()
+  if(!container) return true
+  
+  const { scrollTop, scrollHeight, clientHeight } = container
+  return scrollHeight - scrollTop - clientHeight <= 10
+}
+
 let currentHeight = 0
+let isUserScrolling = false  // 用户是否正在主动滚动
+
 watch([() => route.params.id, () => props.messages.length], () => {
   scrollToBottom('instant')
   currentHeight = 0
+  isUserScrolling = false  // 用户切换对话，恢复自动滚底
 })
 
 watch(
@@ -138,16 +157,46 @@ watch(
     const height = scrollDOM.scrollHeight
     if(height > currentHeight) {
       currentHeight = height 
-      scrollToBottom()
+      // 只有用户没有主动滚动，或者已经在底部时才自动滚动
+      if (!isUserScrolling || isNearBottom()) {
+        scrollToBottom()
+      }
     }
   },
   { immediate: true, deep: true }
 )
 
+// 处理滚动事件
+function handleScroll() {
+  // 如果已经在底部，重置用户滚动状态
+  if (isNearBottom()) {
+    isUserScrolling = false
+    return
+  }
+  
+  // 标记用户正在主动滚动（一旦滚动就不再自动滚底，直到手动回到底部）
+  isUserScrolling = true
+}
+
 // 初始化最底部
 onMounted(() => {
   scrollToBottom('instant')
+  
+  // 监听滚动事件
+  const container = _getScrollbarContainer()
+  if (container) {
+    container.addEventListener('scroll', handleScroll)
+  }
 })
+
+onUnmounted(() => {
+  // 清理事件监听
+  const container = _getScrollbarContainer()
+  if (container) {
+    container.removeEventListener('scroll', handleScroll)
+  }
+})
+
 </script>
 
 <template>
